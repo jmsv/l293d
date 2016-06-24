@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import RPi.GPIO as GPIO
 from time import sleep
 from threading import Thread
@@ -70,4 +71,6 @@ class motor(object):
         if verbose: print('stopping {}.'.format(str(self)))
 
 
+def cleanup():
+    GPIO.cleanup()
 
