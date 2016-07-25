@@ -5,7 +5,8 @@ import RPi.GPIO as GPIO
 from time import sleep
 from threading import Thread
 
-verbose = True
+verbose = True # Prints stuff to the terminal
+test_mode = True # Disables GPIO calls when true
 pins_in_use = []
 
 #GPIO.setmode(GPIO.BOARD)
@@ -45,7 +46,7 @@ class motor(object):
     
     def gpio_setup(self, A, B, C):
         for pin in [A, B, C]:
-            pass#GPIO.setup(pin, GPIO.OUT)
+            if not test_mode: GPIO.setup(pin, GPIO.OUT)
     
         
     def spin(self, direction=1, duration=None, wait=True):
@@ -72,5 +73,5 @@ class motor(object):
 
 
 def cleanup():
-    GPIO.cleanup()
+    if not test_mode: GPIO.cleanup()
 
