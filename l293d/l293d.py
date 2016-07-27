@@ -1,15 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import RPi.GPIO as GPIO
 from time import sleep
 from threading import Thread
+
+try:
+    import RPi.GPIO as GPIO
+except Exception as e:
+    print('RPi.GPIO not installed.')
+    test_mode = True
+    print('Test mode has been enabled. Please view README for more info.')
+
+if not test_mode:
+    try:
+        GPIO.setmode(GPIO.BOARD)
+        if verbose: print('GPIO mode set (GPIO.BOARD)')
+    except Exception as e:
+        print('Can\'t set GPIO mode (GPIO.BOARD)')
 
 verbose = True # Prints stuff to the terminal
 test_mode = True # Disables GPIO calls when true
 pins_in_use = []
-
-#GPIO.setmode(GPIO.BOARD)
 
 class motor(object):
     """
@@ -50,13 +61,17 @@ class motor(object):
     
         
     def spin(self, direction=1, duration=None, wait=True):
-        if verbose: print('spinning {} clockwise.'.format(str(self)))
+        if verbose: print('spinning motor at {} clockwise.'.format(self.pins_string_list()))
         # Code to start to spin motor (self) according to direction
         if duration is not None:
             stop_thread = Thread(target=self.stop, args = (duration, ))
             stop_thread.start()
             if wait:
                 stop_thread.join()
+
+
+    def pins_string_list(self):
+        return '[{}, {} and {}]'.format(str(self.pinA), str(self.pinB), str(self.pinC))
     
     
     def spin_clockwise(self, duration=None, wait=True):
@@ -74,4 +89,3 @@ class motor(object):
 
 def cleanup():
     if not test_mode: GPIO.cleanup()
-
