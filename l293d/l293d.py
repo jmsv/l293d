@@ -4,6 +4,9 @@
 from time import sleep
 from threading import Thread
 
+from info import version
+print('L293D driver version ' + version.num_string)
+
 try:
     import RPi.GPIO as GPIO
 except Exception as e:
