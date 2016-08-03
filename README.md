@@ -5,8 +5,8 @@
 
 ## Contents:
 1. [Installation](#installation)
-2. [Hardware](#hardware)
-3. [Python scripts](#python-scripts)
+2. [Hardware Setup](#hardware-setup)
+3. [Python Scripts](#python-scripts)
 4. [License](#license)
 
 
@@ -15,33 +15,35 @@
 To install the Python library:
 
 1. #### Clone code from GitHub
-       git clone https://github.com/jamesevickery/l293d.git
+        $ git clone https://github.com/jamesevickery/l293d.git
 
 2. #### Navigate to the l293d folder
 
-       cd l293d/
+        $ cd l293d/
 
 3. #### Install the library:
 
-       $ sudo apt-get install python-dev python-pip
-       $ sudo python setup.py install
+        $ sudo apt-get install python-dev python-pip
+        $ sudo python setup.py install
 
 4. #### Test
 
-       $ python
-       $ import l293d.l293d as l293d
+        $ python
+        $ import l293d.l293d as l293d
 
    If importing the library forces test mode, check if GPIO.RPi is installed:
-       sudo apt-get install RPi.GPIO
+
+        $ sudo apt-get install RPi.GPIO
+
    This should only work on a Raspberry Pi, however other devices may be used to test the functionality of this library.
 
 
-## Hardware setup
+## Hardware Setup
 
 *to be added: information on how to physically set up motors for use alongside this software*
 
 
-## Python scripts
+## Python Scripts
 
 *to be added: how to create scripts with this program to set up and control motors*
 
