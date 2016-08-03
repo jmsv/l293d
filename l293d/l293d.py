@@ -8,7 +8,7 @@ verbose = True # Prints stuff to the terminal
 test_mode = False # Disables GPIO calls when true
 pins_in_use = [] # Lists pins in use (all motors)
 
-from info import version
+import version
 print('L293D driver version ' + version.num_string)
 
 try:
@@ -33,19 +33,19 @@ class motor(object):
     motor_pins[1] is pinB is L293D pin2 or pin10 : Anticlockwise positive
     motor_pins[2] is pinC is L293D pin7 or pin15 : Clockwise positive
     """
-    
+
     motor_pins = [0 for x in range(3)]
-    
+
     def __init__(self, pinA=0, pinB=0, pinC=0):
         self.motor_pins[0] = pinA
         self.motor_pins[1] = pinB
         self.motor_pins[2] = pinC
-        
+
         self.pins_are_valid(self.motor_pins)
         pins_in_use.append(self.motor_pins)
         self.gpio_setup(self.motor_pins)
-    
-    
+
+
     def pins_are_valid(self, pins):
         for pin in pins:
             pin_int = int(pin)
@@ -56,13 +56,13 @@ class motor(object):
                     raise ValueError('GPIO pin {} already in use.'.format(pin_int))
         self.motor_pins = pins
         return True
-    
-    
+
+
     def gpio_setup(self, pins):
         for pin in pins:
             if not test_mode: GPIO.setup(pin, GPIO.OUT)
-    
-        
+
+
     def drive_motor(self, direction=1, duration=None, wait=True):
         if not test_mode:
             if (direction == 0):
@@ -80,18 +80,18 @@ class motor(object):
 
     def pins_string_list(self):
         return '[{}, {} and {}]'.format(tuple(self.motor_pins))
-    
-    
+
+
     def spin_clockwise(self, duration=None, wait=True):
         if verbose: print('spinning motor at pins {} clockwise.'.format(str(self)))
         self.drive_motor(direction=1, duration=duration, wait=wait)
-    
-    
+
+
     def spin_anticlockwise(self, duration=None, wait=True):
         if verbose: print('spinning motor at pins {} anticlockwise.'.format(str(self)))
         self.drive_motor(direction=-1, duration=duration, wait=wait)
-    
-    
+
+
     def stop(self, after=0):
         if after > 0: sleep(after)
         if verbose: print('stopping motor at pins {}.'.format(str(self)))
@@ -100,4 +100,3 @@ class motor(object):
 
 def cleanup():
     if not test_mode: GPIO.cleanup()
-

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from info import version
+from l293d import version
 
 from distutils.core import setup,Extension
 setup(
