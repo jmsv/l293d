@@ -2,7 +2,6 @@
 # L293D driver
 *Python module to drive motors from a Raspberry Pi using the L293D chip*
 
----
 
 ## Contents:
 1. [Installation](#installation)
@@ -10,16 +9,18 @@
 3. [Python scripts](#python-scripts)
 4. [License](#license)
 
----
 
 ## Installation
 
 To install the Python library:
+
 1. #### Clone code from GitHub
        git clone https://github.com/jamesevickery/l293d.git
+
 2. #### Navigate to the l293d folder
 
        cd l293d/
+
 3. #### Install the library:
 
        $ sudo apt-get install python-dev python-pip
@@ -34,19 +35,16 @@ To install the Python library:
        sudo apt-get install RPi.GPIO
    This should only work on a Raspberry Pi, however other devices may be used to test the functionality of this library.
 
----
 
 ## Hardware setup
 
 *to be added: information on how to physically set up motors for use alongside this software*
 
----
 
 ## Python scripts
 
 *to be added: how to create scripts with this program to set up and control motors*
 
----
 
 ## License
 
