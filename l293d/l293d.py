@@ -9,7 +9,7 @@ test_mode = False # Disables GPIO calls when true
 pins_in_use = [] # Lists pins in use (all motors)
 
 import version
-print('L293D driver version ' + version.num_string)
+print('L293D driver version ' + version.num)
 
 try:
     import RPi.GPIO as GPIO

@@ -4,7 +4,7 @@ from l293d import version
 from distutils.core import setup,Extension
 setup(
     name = "l293d",
-    version = version.num_string,
+    version = version.num,
     author = "James Vickery",
     author_email = "jamesevickery.dev@gmail.com",
     description = ("A Python module to drive motors using an L293D via Raspberry Pi GPIO"),
