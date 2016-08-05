@@ -7,7 +7,9 @@
 1. [Installation](#installation)
 2. [Hardware Setup](#hardware-setup)
 3. [Python Scripts](#python-scripts)
-4. [License](#license)
+4. [Test mode](#test-mode)
+5. [Verbosity](#verbosity)
+6. [License](#license)
 
 
 ## Installation
@@ -35,7 +37,7 @@ To install the Python library:
 
         $ sudo apt-get install RPi.GPIO
 
-   This should only work on a Raspberry Pi, however other devices may be used to test the functionality of this library.
+   This should only work on a Raspberry Pi, however other devices may be used to [test the functionality](#test-mode) of this library.
 
 
 ## Hardware Setup
@@ -46,6 +48,16 @@ To install the Python library:
 ## Python Scripts
 
 *to be added: how to create scripts with this program to set up and control motors*
+
+
+## Test Mode
+
+*to be added: what is test mode? what's it for? what is the meaning of life? etc.*
+
+
+## Verbosity
+
+*to be added: some stuff*
 
 
 ## License
