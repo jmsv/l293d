@@ -31,9 +31,9 @@ To install the Python library:
 4. #### Test
 
         $ python
-        $ import l293d.l293d as l293d
+        >>> import l293d.l293d as l293d
 
-   If importing the library forces test mode, check if GPIO.RPi is installed:
+   If importing the library forces [test mode](#test-mode), try to install RPi.GPIO:
 
         $ sudo apt-get install RPi.GPIO
 
@@ -42,12 +42,12 @@ To install the Python library:
 
 ## Hardware Setup
 
-*to be added: information on how to physically set up motors for use alongside this software*
+*to be added: information on how to physically set up motors for use with this library*
 
 
 ## Python Scripts
 
-*to be added: how to create scripts with this program to set up and control motors*
+*to be added: how to create scripts with this library to set up and control motors*
 
 
 ## Test Mode
@@ -57,7 +57,7 @@ To install the Python library:
 
 ## Verbosity
 
-*to be added: some stuff*
+*to be added: how to enable/disable verbosity, what it does and whatever*
 
 
 ## License
