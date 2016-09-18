@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import version
+print('L293D driver version ' + version.num)
+
 from time import sleep
 from threading import Thread
 
-verbose = True # Prints stuff to the terminal
-test_mode = False # Disables GPIO calls when true
-pins_in_use = [] # Lists pins in use (all motors)
-
-import version
-print('L293D driver version ' + version.num)
+try:
+    import config
+    verbose = config.verbose
+    test_mode = config.test_mode
+except:
+    print('Error loading config')
 
 try:
     import RPi.GPIO as GPIO
