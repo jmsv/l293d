@@ -79,24 +79,32 @@ class motor(object):
 
 
     def pins_string_list(self):
-        return '[{}, {} and {}]'.format(tuple(self.motor_pins))
+        return '[{}, {} and {}]'.format(*self.motor_pins)
 
 
     def spin_clockwise(self, duration=None, wait=True):
-        if verbose: print('spinning motor at pins {} clockwise.'.format(str(self)))
+        if verbose: print('spinning motor at pins {} clockwise.'.format(self.pins_string_list()))
         self.drive_motor(direction=1, duration=duration, wait=wait)
 
 
     def spin_anticlockwise(self, duration=None, wait=True):
-        if verbose: print('spinning motor at pins {} anticlockwise.'.format(str(self)))
+        if verbose: print('spinning motor at pins {} anticlockwise.'.format(self.pins_string_list()))
         self.drive_motor(direction=-1, duration=duration, wait=wait)
 
 
     def stop(self, after=0):
         if after > 0: sleep(after)
-        if verbose: print('stopping motor at pins {}.'.format(str(self)))
+        if verbose: print('stopping motor at pins {}.'.format(self.pins_string_list()))
         if not test_mode: self.drive_motor(direction=0, duration=after, wait=True)
 
 
 def cleanup():
-    if not test_mode: GPIO.cleanup()
+    if not test_mode:
+        try:
+            GPIO.cleanup()
+            print('GPIO cleanup successful.')
+        except:
+            if verbose: print('GPIO cleanup failed.')
+            
+
+    
