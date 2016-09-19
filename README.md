@@ -25,7 +25,7 @@ To install the Python library:
 
 3. #### Install the library:
 
-        $ sudo apt-get install python-dev python-pip
+        $ sudo apt-get install python-dev python-pip python-yaml
         $ sudo python setup.py install
 
 4. #### Test
