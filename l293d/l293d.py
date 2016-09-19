@@ -1,18 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import version
-print('L293D driver version ' + version.num)
-
-from time import sleep
-from threading import Thread
-
 try:
     import config
     verbose = config.verbose
     test_mode = config.test_mode
+    pin_numbering = config.pin_numbering
+    config_path = config.config_path
 except:
-    print('Error loading config')
+    raise ValueError('Error loading configuration.')
+
+if verbose:
+    import version
+    print('L293D driver version ' + version.num)
+
+from time import sleep
+from threading import Thread
 
 try:
     import RPi.GPIO as GPIO
@@ -27,7 +30,9 @@ if not test_mode:
         GPIO.setwarnings(False)
         if verbose: print('GPIO mode set (GPIO.BOARD)')
     except Exception as e:
-        print("Can't set GPIO mode (GPIO.BOARD)")
+        print('Can\'t set GPIO mode (GPIO.BOARD)')
+
+pins_in_use = [] # Lists pins in use (all motors)
 
 class motor(object):
     """
