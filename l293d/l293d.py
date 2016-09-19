@@ -49,11 +49,15 @@ class motor(object):
         self.gpio_setup(self.motor_pins)
 
 
-    def pins_are_valid(self, pins):
+    def pins_are_valid(self, pins, force_selection=False):
+        valid_pins = [7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 35, 36, 37, 38, 40]
         for pin in pins:
             pin_int = int(pin)
-            if (pin_int < 1) or (pin_int > 40):
-                raise ValueError('GPIO pin number needs to be between 1 and 40 inclusively.')
+            if (pin_int not in valid_pins) and (force_selection is not True):
+                errStr =  ("GPIO pin number must be from list of valid pins: %s" 
+                    "\nTo use selected pins anyway, set force_selection=True "
+                    "in function call." % str(valid_pins))
+                raise ValueError(errStr)
             for pin_in_use in pins_in_use:
                 if pin_int in pin_in_use:
                     raise ValueError('GPIO pin {} already in use.'.format(pin_int))
