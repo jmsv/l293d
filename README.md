@@ -9,7 +9,8 @@
 3. [Python Scripts](#python-scripts)
 4. [Test mode](#test-mode)
 5. [Verbosity](#verbosity)
-6. [License](#license)
+6. [Sources](#sources)
+7. [License](#license)
 
 
 ## Installation
@@ -125,6 +126,11 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 ## Verbosity
 
 *to be added: how to enable/disable verbosity, what it does and whatever*
+
+
+## Sources
+
+*to be added as and when I remember where I found stuff*
 
 
 ## License
