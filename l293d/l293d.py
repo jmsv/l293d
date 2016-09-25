@@ -126,4 +126,6 @@ def cleanup():
             if verbose: print('GPIO cleanup successful.')
         except:
             if verbose: print('GPIO cleanup failed.')
+    else:
+        if verbose: print('Cleanup not needed when test_mode is enabled.')
 
