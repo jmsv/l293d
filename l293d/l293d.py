@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-try:
+try: # load configuration
     import config
     verbose = config.verbose
     test_mode = config.test_mode
@@ -10,27 +10,36 @@ try:
 except:
     raise ValueError('Error loading configuration.')
 
-if verbose:
-    import version
-    print('L293D driver version ' + version.num)
+def print_version():
+    if verbose:
+        import version
+        print('L293D driver version ' + version.num)
+
+def import_gpio(): # RPi.GPIO module
+    global test_mode
+    try:
+        import RPi.GPIO as GPIO
+    except Exception as e:
+        print("Can't import RPi.GPIO. Please (re)install.")
+        test_mode = True
+        print('Test mode has been enabled. Please view README for more info.')
+
+def gpio_setmode(): #Sets BOARD
+    global test_mode
+    if not test_mode:
+        try:
+            GPIO.setmode(GPIO.BOARD)
+            GPIO.setwarnings(False)
+            if verbose: print('GPIO mode set (GPIO.BOARD)')
+        except Exception as e:
+            print('Can\'t set GPIO mode (GPIO.BOARD)')
 
 from time import sleep
 from threading import Thread
 
-try:
-    import RPi.GPIO as GPIO
-except Exception as e:
-    print("Can't import RPi.GPIO. Please (re)install.")
-    test_mode = True
-    print('Test mode has been enabled. Please view README for more info.')
-
-if not test_mode:
-    try:
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setwarnings(False)
-        if verbose: print('GPIO mode set (GPIO.BOARD)')
-    except Exception as e:
-        print('Can\'t set GPIO mode (GPIO.BOARD)')
+print_version()
+import_gpio()
+gpio_setmode()
 
 pins_in_use = [] # Lists pins in use (all motors)
 
