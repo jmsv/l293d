@@ -115,8 +115,35 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 
 ## Python Scripts
 
-*to be added: how to create scripts with this library to set up and control motors*
+1. ### Import the module:
+   
+   ```import l293d.l293d as l293d```
+   
+   The module names might change in the future, because the current import statement looks a bit stupid.
 
+2. ### Define motors
+   
+   In this example, the GPIO pin numbers will be the same as listed in [Hardware Setup](#hardware-setup).
+   
+   ```motor1 = l293d.motor(22, 18, 16)```
+   
+   'motor1' is what we're calling the motor. You can call it whatever you want, for example `wheel_motor`, `london-eye` or `evil_avocado`.
+   
+   The numbers correspond to which GPIO pins are connected to L293D pins 1, 2 and 7 repectively: the pins we set up in [Hardware Setup](#hardware-setup).
+
+3. ### Once you've defined your motor(s), you're ready to make them spin!
+   
+   There are few commands for this, namely:
+   
+   - `motor1.spin_clockwise()`
+   - `motor1.spin_anticlockwise()`
+   - `motor1.stop()`
+   
+   If, `spin_clockwise` and `spin_anticlockwise` spin the motor the wrong way, swap the two motor connections to the L293D chip, as explained in [Hardware Setup: Adding a motor](#adding-a-motor).
+
+4. ### I recommend that at the end of your script, you include the line: `l293d.cleanup()`, to cleanup the GPIO pins being used by the L293D library. This avoids damage to the GPIO pins; see [here](http://raspi.tv/2013/rpi-gpio-basics-3-how-to-exit-gpio-programs-cleanly-avoid-warnings-and-protect-your-pi).
+
+   I also recommend that you set up '`try` `catch`' to cleanup if any exceptions are encountered during use of this library.
 
 ## Test Mode
 
