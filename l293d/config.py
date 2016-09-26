@@ -17,6 +17,8 @@ test_mode: false
 
 pin_numbering: BOARD
 #^ BOARD or BCM mode - see README
+
+
 ''' # This string acts as the default configuration
         file = open(config_path, 'w')
         file.write(config_contents)
