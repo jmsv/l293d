@@ -2,7 +2,6 @@
 # L293D driver
 *Python module to drive motors from a Raspberry Pi using the L293D chip*
 
-
 ## Contents:
 1. [Installation](#installation)
 2. [Hardware Setup](#hardware-setup)
@@ -158,6 +157,13 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 ## Sources
 
 *to be added as and when I remember where I found stuff*
+
+
+## Help Me
+
+If you'd like to support my open-source development while I'm a poor university student, please click the button below:
+
+[![donate](https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=US7C2KB9YZUBJ)
 
 
 ## License
