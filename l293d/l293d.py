@@ -111,6 +111,14 @@ class motor(object):
     def spin_anticlockwise(self, duration=None, wait=True):
         if verbose: print('spinning motor at pins {} anticlockwise.'.format(self.pins_string_list()))
         self.drive_motor(direction=-1, duration=duration, wait=wait)
+    
+    
+    def clockwise(self, duration=None, wait=True):
+        self.spin_clockwise(duration, wait)
+    
+    
+    def anticlockwise(self, duration=None, wait=True):
+        self.spin_anticlockwise(duration, wait)
 
 
     def stop(self, after=0):
