@@ -118,7 +118,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    
    ```import l293d.l293d as l293d```
    
-   The module names might change in the future, because the current import statement looks a bit stupid.
+   The module names might change in the future, to make it more clear what is being imported.
 
 2. ### Define motors
    
@@ -140,9 +140,11 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    
    If, `spin_clockwise` and `spin_anticlockwise` spin the motor the wrong way, swap the two motor connections to the L293D chip, as explained in [Hardware Setup: Adding a motor](#adding-a-motor).
 
-4. ### I recommend that at the end of your script, you include the line: `l293d.cleanup()`, to cleanup the GPIO pins being used by the L293D library. This avoids damage to the GPIO pins; see [here](http://raspi.tv/2013/rpi-gpio-basics-3-how-to-exit-gpio-programs-cleanly-avoid-warnings-and-protect-your-pi).
+4. ### Cleanup
+   
+   I recommend that at the end of your script, you include the line: `l293d.cleanup()`, to cleanup the GPIO pins being used by the l293d library. This avoids damage to the GPIO pins; see [here](http://raspi.tv/2013/rpi-gpio-basics-3-how-to-exit-gpio-programs-cleanly-avoid-warnings-and-protect-your-pi).
 
-   I also recommend that you set up '`try` `catch`' to cleanup if any exceptions are encountered during use of this library.
+   I also recommend that you set up '`try` `catch`' around motor calls to cleanup if any exceptions are encountered during use of this library.
 
 ## Test Mode
 
@@ -156,10 +158,14 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 
 ## Sources
 
-*to be added as and when I remember where I found stuff*
+- The l293d library is based on [this tutorial](https://business.tutsplus.com/tutorials/controlling-dc-motors-using-python-with-a-raspberry-pi--cms-20051).
+- Some helpful information about the driver chip can be found [here](http://www.rakeshmondal.info/L293D-Motor-Driver).
+- You can buy L293D driver chips cheaply online - I bought a pack of 5 [on Amazon](https://www.amazon.co.uk/dp/B008KYMVVY)
 
 
-## Help Me
+## Support
+
+Feel free to contact me if you have any questions about use or development of `l293d`. Either [submit an issue](https://github.com/jamesevickery/l293d/issues), email me at jamesevickery.dev@gmail.com or tweet/DM me [on Twitter](https://twitter.com/jamesevickery)
 
 If you'd like to support my open-source development while I'm a poor university student, please click the button below:
 
