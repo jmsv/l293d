@@ -11,6 +11,7 @@ try:
     import config
     verbose = config.verbose
     test_mode = config.test_mode
+    use_BCM = config.use_BCM
 except:
     print('Error loading config')
 
@@ -23,11 +24,15 @@ except Exception as e:
 
 if not test_mode:
     try:
-        GPIO.setmode(GPIO.BOARD)
+        if use_BCM:
+            GPIO.setmode(GPIO.BCM)
+            if verbose: print('GPIO mode set (GPIO.BCM)')
+        else:
+            GPIO.setmode(GPIO.BOARD)
+            if verbose: print('GPIO mode set (GPIO.BOARD)')
         GPIO.setwarnings(False)
-        if verbose: print('GPIO mode set (GPIO.BOARD)')
     except Exception as e:
-        print("Can't set GPIO mode (GPIO.BOARD)")
+        print("Can't set GPIO mode')
 
 class motor(object):
     """
@@ -50,7 +55,11 @@ class motor(object):
 
 
     def pins_are_valid(self, pins, force_selection=False):
-        valid_pins = [7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 35, 36, 37, 38, 40]
+        global use_BCM
+        if use_BCM:
+            valid_pins = [4, 17, 18, 27, 22, 23, 24, 25, 5, 6, 12, 13, 16, 26]
+        else: 
+            valid_pins = [7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37]
         for pin in pins:
             pin_int = int(pin)
             if (pin_int not in valid_pins) and (force_selection is not True):
