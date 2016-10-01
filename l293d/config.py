@@ -32,4 +32,3 @@ with open(config_path, 'r') as ymlfile:
 verbose = config['verbose']
 test_mode = config['test_mode']
 pin_numbering = config['pin_numbering']
->>>>>>> 8419ecb8496eb0aacee3ec3fb3286fa013a3d73f

@@ -20,12 +20,12 @@ def import_gpio(): # RPi.GPIO module
     global pin_numbering
     try:
         import RPi.GPIO as GPIO
-        if pin_numbering == 'BCM':
-            GPIO.setmode(GPIO.BCM)
-            if verbose: print('GPIO mode set (GPIO.BCM)')
-        else:
+        if pin_numbering == 'BOARD':
             GPIO.setmode(GPIO.BOARD)
             if verbose: print('GPIO mode set (GPIO.BOARD)')
+        else:
+            GPIO.setmode(GPIO.BCM)
+            if verbose: print('GPIO mode set (GPIO.BCM)')
         GPIO.setwarnings(False)
     except Exception as e:
         print("Can't import RPi.GPIO. Please (re)install.")
