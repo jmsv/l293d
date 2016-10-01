@@ -1,30 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import version
-print('L293D driver version ' + version.num)
-
-from time import sleep
-from threading import Thread
-
-try:
+try: # load configuration
     import config
     verbose = config.verbose
     test_mode = config.test_mode
-    use_BCM = config.use_BCM
+    pin_numbering = config.pin_numbering
+    config_path = config.config_path
 except:
-    print('Error loading config')
+    raise ValueError('Error loading configuration.')
 
-try:
-    import RPi.GPIO as GPIO
-except Exception as e:
-    print("Can't import RPi.GPIO. Please (re)install.")
-    test_mode = True
-    print('Test mode has been enabled. Please view README for more info.')
+def print_version():
+    if verbose:
+        import version
+        print('L293D driver version ' + version.num)
 
-if not test_mode:
+def import_gpio(): # RPi.GPIO module
+    global test_mode
+    global pin_numbering
     try:
-        if use_BCM:
+        import RPi.GPIO as GPIO
+        if pin_numbering == 'BCM':
             GPIO.setmode(GPIO.BCM)
             if verbose: print('GPIO mode set (GPIO.BCM)')
         else:
@@ -32,7 +28,28 @@ if not test_mode:
             if verbose: print('GPIO mode set (GPIO.BOARD)')
         GPIO.setwarnings(False)
     except Exception as e:
-        print("Can't set GPIO mode')
+        print("Can't import RPi.GPIO. Please (re)install.")
+        test_mode = True
+        print('Test mode has been enabled. Please view README for more info.')
+
+def gpio_setmode(): #Sets BOARD
+    global test_mode
+    if not test_mode:
+        try:
+            GPIO.setmode(GPIO.BOARD)
+            GPIO.setwarnings(False)
+            if verbose: print('GPIO mode set (GPIO.BOARD)')
+        except Exception as e:
+            print('Can\'t set GPIO mode (GPIO.BOARD)')
+
+from time import sleep
+from threading import Thread
+
+print_version()
+import_gpio()
+gpio_setmode()
+
+pins_in_use = [] # Lists pins in use (all motors)
 
 class motor(object):
     """
@@ -55,8 +72,8 @@ class motor(object):
 
 
     def pins_are_valid(self, pins, force_selection=False):
-        global use_BCM
-        if use_BCM:
+        global pin_numbering
+        if pin_numbering == 'BOARD':
             valid_pins = [4, 17, 18, 27, 22, 23, 24, 25, 5, 6, 12, 13, 16, 26]
         else: 
             valid_pins = [7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37]
@@ -106,6 +123,14 @@ class motor(object):
     def spin_anticlockwise(self, duration=None, wait=True):
         if verbose: print('spinning motor at pins {} anticlockwise.'.format(self.pins_string_list()))
         self.drive_motor(direction=-1, duration=duration, wait=wait)
+    
+    
+    def clockwise(self, duration=None, wait=True):
+        self.spin_clockwise(duration, wait)
+    
+    
+    def anticlockwise(self, duration=None, wait=True):
+        self.spin_anticlockwise(duration, wait)
 
 
     def stop(self, after=0):
@@ -121,4 +146,6 @@ def cleanup():
             if verbose: print('GPIO cleanup successful.')
         except:
             if verbose: print('GPIO cleanup failed.')
+    else:
+        if verbose: print('Cleanup not needed when test_mode is enabled.')
 
