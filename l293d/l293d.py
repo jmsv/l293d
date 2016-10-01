@@ -74,9 +74,9 @@ class motor(object):
     def pins_are_valid(self, pins, force_selection=False):
         global pin_numbering
         if pin_numbering == 'BOARD':
-            valid_pins = [4, 17, 18, 27, 22, 23, 24, 25, 5, 6, 12, 13, 16, 26]
-        else: 
             valid_pins = [7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37]
+        else: # 'BCM'
+            valid_pins = [4, 5, 6, 12, 13, 16, 17, 18, 22, 23, 24, 25, 26, 27]
         for pin in pins:
             pin_int = int(pin)
             if (pin_int not in valid_pins) and (force_selection is not True):
