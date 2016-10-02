@@ -31,7 +31,7 @@ To install the Python library:
 4. ### Test
 
         $ python
-        >>> import l293d.l293d as l293d
+        >>> import l293d.driver
 
    If importing the library forces [test mode](#test-mode), try to install RPi.GPIO:
 
@@ -116,9 +116,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 
 1. ### Import the module:
    
-   ```import l293d.l293d as l293d```
-   
-   The module names might change in the future, to make it more clear what is being imported.
+   ```import l293d.driver as l293d```
 
 2. ### Define motors
    
