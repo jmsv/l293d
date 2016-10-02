@@ -17,30 +17,28 @@ def print_version():
 
 def import_gpio(): # RPi.GPIO module
     global test_mode
-    global pin_numbering
     try:
         import RPi.GPIO as GPIO
-        if pin_numbering == 'BOARD':
-            GPIO.setmode(GPIO.BOARD)
-            if verbose: print('GPIO mode set (GPIO.BOARD)')
-        else:
-            GPIO.setmode(GPIO.BCM)
-            if verbose: print('GPIO mode set (GPIO.BCM)')
+	global GPIO
         GPIO.setwarnings(False)
     except Exception as e:
         print("Can't import RPi.GPIO. Please (re)install.")
         test_mode = True
         print('Test mode has been enabled. Please view README for more info.')
 
-def gpio_setmode(): #Sets BOARD
+def gpio_setmode(): #Sets GPIO numbering scheme
     global test_mode
+    global pin_numbering
     if not test_mode:
         try:
-            GPIO.setmode(GPIO.BOARD)
-            GPIO.setwarnings(False)
-            if verbose: print('GPIO mode set (GPIO.BOARD)')
+            if pin_numbering == 'BOARD':
+                GPIO.setmode(GPIO.BOARD)
+                if verbose: print('GPIO mode set (GPIO.BOARD)')
+            else:
+                GPIO.setmode(GPIO.BCM)
+                if verbose: print('GPIO mode set (GPIO.BCM)')
         except Exception as e:
-            print('Can\'t set GPIO mode (GPIO.BOARD)')
+            print('Can\'t set GPIO mode')
 
 from time import sleep
 from threading import Thread
