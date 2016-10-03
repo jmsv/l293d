@@ -1,0 +1,8 @@
+language: python
+python:
+  - "2.7"
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y python-dev python-pip python-yaml
+install:
+  - sudo python setup.py -q install
