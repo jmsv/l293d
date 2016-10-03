@@ -6,3 +6,5 @@ before_install:
   - sudo apt-get install -y python-dev python-pip python-yaml
 install:
   - sudo python setup.py -q install
+script:
+  - echo "to be continued..."
