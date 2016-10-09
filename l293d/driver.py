@@ -114,12 +114,12 @@ class motor(object):
 
 
     def spin_clockwise(self, duration=None, wait=True):
-        if verbose: print('spinning motor at pins {} clockwise.'.format(self.pins_string_list()))
+        if verbose: print('spinning motor at {0} pins {1} clockwise.'.format(pin_numbering, self.pins_string_list()))
         self.drive_motor(direction=1, duration=duration, wait=wait)
 
 
     def spin_anticlockwise(self, duration=None, wait=True):
-        if verbose: print('spinning motor at pins {} anticlockwise.'.format(self.pins_string_list()))
+        if verbose: print('spinning motor at {0} pins {1} anticlockwise.'.format(pin_numbering, self.pins_string_list()))
         self.drive_motor(direction=-1, duration=duration, wait=wait)
     
     
@@ -133,7 +133,7 @@ class motor(object):
 
     def stop(self, after=0):
         if after > 0: sleep(after)
-        if verbose: print('stopping motor at pins {}.'.format(self.pins_string_list()))
+        if verbose: print('stopping motor at {0} pins {1}.'.format(pin_numbering, self.pins_string_list()))
         if not test_mode: self.drive_motor(direction=0, duration=after, wait=True)
 
 
