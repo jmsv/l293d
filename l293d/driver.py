@@ -21,11 +21,13 @@ if verbose:
 # import GPIO
 try:
     import RPi.GPIO as GPIO
-    GPIO.setwarnings(False)
 except Exception as e:
     print("Can't import RPi.GPIO. Please (re)install.")
     test_mode = True
     print('Test mode has been enabled. Please view README for more info.')
+if not test_mode:
+    if verbose: GPIO.setwarnings(True)
+    else: GPIO.setwarnings(False)
 
 
 # set GPIO mode
