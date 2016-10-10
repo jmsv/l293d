@@ -32,15 +32,16 @@ if not test_mode:
 
 # set GPIO mode
 if not test_mode:
-    try:
-        if pin_numbering == 'BOARD':
-            GPIO.setmode(GPIO.BOARD)
-            if verbose: print('GPIO mode set (GPIO.BOARD)')
-        else:
-            GPIO.setmode(GPIO.BCM)
-            if verbose: print('GPIO mode set (GPIO.BCM)')
-    except Exception as e:
-        print('Can\'t set GPIO mode')
+    if pin_numbering == 'BOARD':
+        if verbose: print('Setting GPIO mode: BOARD')
+        GPIO.setmode(GPIO.BOARD)
+    elif pin_numbering == 'BCM':
+        if verbose: print('Setting GPIO mode: BCM')
+        GPIO.setmode(GPIO.BCM)
+    else:
+        print("pin_numbering must be either 'BOARD' or 'BCM'.")
+        raise ValueError("pin_numbering must be either 'BOARD' or 'BCM'.")
+
 
 
 from time import sleep
