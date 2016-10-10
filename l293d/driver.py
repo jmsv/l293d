@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-try: # load configuration
+# load configuration
+try:
     import config
     verbose = config.verbose
     test_mode = config.test_mode
@@ -10,44 +11,42 @@ try: # load configuration
 except:
     raise ValueError("Error loading configuration. Make sure you've installed python-yaml and you have a valid l293d-config.yaml set up - view README for more info.")
 
-def print_version():
-    if verbose:
-        import version
-        print('L293D driver version ' + version.num)
 
-def import_gpio(): # RPi.GPIO module
-    global test_mode
+# print version
+if verbose:
+    import version
+    print('L293D driver version ' + version.num)
+
+
+# import GPIO
+try:
+    import RPi.GPIO as GPIO
+    GPIO.setwarnings(False)
+except Exception as e:
+    print("Can't import RPi.GPIO. Please (re)install.")
+    test_mode = True
+    print('Test mode has been enabled. Please view README for more info.')
+
+
+# set GPIO mode
+if not test_mode:
     try:
-        import RPi.GPIO as GPIO
-	global GPIO
-        GPIO.setwarnings(False)
+        if pin_numbering == 'BOARD':
+            GPIO.setmode(GPIO.BOARD)
+            if verbose: print('GPIO mode set (GPIO.BOARD)')
+        else:
+            GPIO.setmode(GPIO.BCM)
+            if verbose: print('GPIO mode set (GPIO.BCM)')
     except Exception as e:
-        print("Can't import RPi.GPIO. Please (re)install.")
-        test_mode = True
-        print('Test mode has been enabled. Please view README for more info.')
+        print('Can\'t set GPIO mode')
 
-def gpio_setmode(): #Sets GPIO numbering scheme
-    global test_mode
-    global pin_numbering
-    if not test_mode:
-        try:
-            if pin_numbering == 'BOARD':
-                GPIO.setmode(GPIO.BOARD)
-                if verbose: print('GPIO mode set (GPIO.BOARD)')
-            else:
-                GPIO.setmode(GPIO.BCM)
-                if verbose: print('GPIO mode set (GPIO.BCM)')
-        except Exception as e:
-            print('Can\'t set GPIO mode')
 
 from time import sleep
 from threading import Thread
 
-print_version()
-import_gpio()
-gpio_setmode()
 
 pins_in_use = [] # Lists pins in use (all motors)
+
 
 class motor(object):
     """
