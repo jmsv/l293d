@@ -8,7 +8,7 @@ try: # load configuration
     pin_numbering = config.pin_numbering
     config_path = config.config_path
 except:
-    raise ValueError('Error loading configuration.')
+    raise ValueError("Error loading configuration. Make sure you've installed python-yaml and you have a valid l293d-config.yaml set up - view README for more info.")
 
 def print_version():
     if verbose:
