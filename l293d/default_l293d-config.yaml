@@ -1,0 +1,11 @@
+# The configuration file for the l293d driver module
+# --------------------------------------------------
+
+verbose: true
+#^ Prints stuff to the terminal
+
+test_mode: false
+#^ Disables GPIO calls when called
+
+pin_numbering: BOARD
+#^ BOARD or BCM mode - see README

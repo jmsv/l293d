@@ -3,32 +3,36 @@ config_path = '' # Custom config filepath
 
 if not config_path:
     import os
+    # Get user home location and append filename.extension
     config_path = os.path.expanduser('~') + '/l293d-config.yaml'
-    if not os.path.exists(config_path):
-        config_contents = '''
-# The configuration file for the l293d driver module
-# --------------------------------------------------
 
-verbose: true
-#^ Prints stuff to the terminal
-
-test_mode: false
-#^ Disables GPIO calls when called
-
-pin_numbering: BOARD
-#^ BOARD or BCM mode - see README
-
-
-''' # This string acts as the default configuration
-        file = open(config_path, 'w')
-        file.write(config_contents)
-        file.close()
+if not os.path.exists(config_path):
+    # Load default config
+    default_file_path = str(os.path.realpath(__file__))
+    # Get path of this file, and remove filename
+    while(default_file_path[-1] != '/'):
+        default_file_path = default_file_path[:-1]
+    # Add default config filename
+    default_file_path += 'default_l293d-config.yaml'
+    # Open default config file
+    default_file = open(default_file_path, 'r')
+    # Read file to config contents, then close
+    config_contents = default_file.read()
+    default_file.close()
+    
+    # Write to user config at config path
+    new_file = open(config_path, 'w')
+    new_file.write(config_contents)
+    new_file.close()
 
 import yaml
 # https://martin-thoma.com/configuration-files-in-python/#yaml
+# Open and load YAML config file
 with open(config_path, 'r') as ymlfile:
     config = yaml.load(ymlfile)
 
+# Assign loaded YAML to config variables
+# These are loaded outside of config.py as, e.g. config.verbose
 verbose = config['verbose']
 test_mode = config['test_mode']
 pin_numbering = config['pin_numbering']
