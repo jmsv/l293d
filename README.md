@@ -113,6 +113,8 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    The circuit should now look something like this:
    
    ![two motors image](misc/motor_two-motors.png)
+   
+   More motors can be used with additional L293Ds. Just set up another chip as demonstrated above - each chip can drive a maximum of 2 motors.
 
 
 ## Python Scripts
