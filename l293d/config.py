@@ -1,12 +1,16 @@
 config_path = '' # Custom config filepath
 #^ For example: '/home/arthurdent/configs/l293d.yaml'
 
+
+import os
+# If no custom path, user's home directory is used
 if not config_path:
-    import os
     # Get user home location and append filename.extension
     config_path = os.path.expanduser('~') + '/l293d-config.yaml'
 
-if not os.path.exists(config_path):
+
+config_path_exists = os.path.exists(config_path)
+if (not config_path_exists):
     # Load default config
     default_file_path = str(os.path.realpath(__file__))
     # Get path of this file, and remove filename
@@ -25,11 +29,17 @@ if not os.path.exists(config_path):
     new_file.write(config_contents)
     new_file.close()
 
+
 import yaml
 # https://martin-thoma.com/configuration-files-in-python/#yaml
 # Open and load YAML config file
-with open(config_path, 'r') as ymlfile:
-    config = yaml.load(ymlfile)
+try:
+    # Open config file and load as YAML
+    with open(config_path, 'r') as ymlfile:
+        config = yaml.load(ymlfile)
+except:
+    raise IOError('Error loading config from: {}. Check config exists.'.format(config_path))
+
 
 # Assign loaded YAML to config variables
 # These are loaded outside of config.py as, e.g. config.verbose

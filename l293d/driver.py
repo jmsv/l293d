@@ -1,36 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# load configuration
-try:
-    import config
-    verbose = config.verbose
-    test_mode = config.test_mode
-    pin_numbering = config.pin_numbering
-    config_path = config.config_path
-except:
-    raise ValueError("Error loading configuration. Make sure you've installed python-yaml and you have a valid l293d-config.yaml set up - view README for more info.")
+# Load config
+import config
+verbose = config.verbose
+test_mode = config.test_mode
+pin_numbering = config.pin_numbering
 
-
-# print version
+# Print version
 if verbose:
     import version
     print('L293D driver version ' + version.num)
 
 
-# import GPIO
+# Import GPIO
 try:
     import RPi.GPIO as GPIO
 except Exception as e:
     print("Can't import RPi.GPIO. Please (re)install.")
     test_mode = True
     print('Test mode has been enabled. Please view README for more info.')
+# Set GPIO warnings based on verbose value
 if not test_mode:
     if verbose: GPIO.setwarnings(True)
     else: GPIO.setwarnings(False)
 
 
-# set GPIO mode
+# Set GPIO mode
 if not test_mode:
     if pin_numbering == 'BOARD':
         if verbose: print('Setting GPIO mode: BOARD')
@@ -43,7 +39,7 @@ if not test_mode:
         raise ValueError("pin_numbering must be either 'BOARD' or 'BCM'.")
 
 
-
+# Import other modules used
 from time import sleep
 from threading import Thread
 
@@ -58,16 +54,21 @@ class motor(object):
     motor_pins[1] is pinB is L293D pin2 or pin10 : Anticlockwise positive
     motor_pins[2] is pinC is L293D pin7 or pin15 : Clockwise positive
     """
-
+    
+    # List of pins in use by motor object
     motor_pins = [0 for x in range(3)]
 
     def __init__(self, pinA=0, pinB=0, pinC=0):
+        # Assign parameters to list
         self.motor_pins[0] = pinA
         self.motor_pins[1] = pinB
         self.motor_pins[2] = pinC
-
+        
+        # Check pins are valid
         self.pins_are_valid(self.motor_pins)
+        # Append global list of pins in use
         pins_in_use.append(self.motor_pins)
+        # Set up GPIO mode for pins
         self.gpio_setup(self.motor_pins)
 
 
