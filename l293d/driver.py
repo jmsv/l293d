@@ -74,10 +74,12 @@ class motor(object):
 
     def pins_are_valid(self, pins, force_selection=False):
         global pin_numbering
-        if pin_numbering == 'BOARD':
+        if pin_numbering == 'BOARD': # Set valid pins for BOARD
             valid_pins = [7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37]
-        else: # 'BCM'
+        elif pin_numbering == 'BCM': # Set valid pins for BCM
             valid_pins = [4, 5, 6, 12, 13, 16, 17, 18, 22, 23, 24, 25, 26, 27]
+        else: # pin_numbering value invalid
+            raise ValueError("pin_numbering must be either 'BOARD' or 'BCM'.")
         for pin in pins:
             pin_int = int(pin)
             if (pin_int not in valid_pins) and (force_selection is not True):
@@ -93,6 +95,7 @@ class motor(object):
 
 
     def gpio_setup(self, pins):
+        # Set GPIO.OUT for each pin in use
         for pin in pins:
             if not test_mode: GPIO.setup(pin, GPIO.OUT)
 
