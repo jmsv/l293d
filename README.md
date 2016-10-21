@@ -64,11 +64,11 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    - The Pi's ground (GND) → Breadboard ground rail(s)
    - Ground rail(s) → L293D pins 4, 5, 12, and 13 pins (the middle ones)
    
-   ![pin numbering image](misc/motor_chip-numbering.png?2)
+   ![pin numbering image](http://i.imgur.com/RLGyWst.png?2)
 
    The circuit should look like this:
 
-   ![power pins image](misc/motor_power-pins.png?1)
+   ![power pins image](http://i.imgur.com/awtfujg.png?1)
    
 2. ### Data wires
 
@@ -82,14 +82,14 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    
    Your circuit should now look something like this:
 
-   ![data pins image](misc/motor_data-pins.png?1)
+   ![data pins image](http://i.imgur.com/h5OQFZT.png?1)
 
 3. ### Adding a motor
 
    - Motor wire 1 → L293D pin 3
    - Motor wire 2 → L293D pin 6
    
-   ![one motor image](misc/motor_one-motor.png?1)
+   ![one motor image](http://i.imgur.com/0PWp7vN.png?1)
 
    You will also need to connect the battery pack to the power rail and the common ground rail - the one that connects to the L293D's pin 8.
    
@@ -112,7 +112,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    
    The circuit should now look something like this:
    
-   ![two motors image](misc/motor_two-motors.png?1)
+   ![two motors image](http://i.imgur.com/ryYQOr4.png?1)
    
    More motors can be used with additional L293Ds. Just set up another chip as demonstrated above - each chip can drive a maximum of 2 motors.
 
