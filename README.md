@@ -1,4 +1,3 @@
-
 # L293D driver
 *Python module to drive DC motors from a Raspberry Pi using the L293D chip*
 
@@ -93,7 +92,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 
    You will also need to connect the battery pack to the power rail and the common ground rail - the one that connects to the L293D's pin 8.
    
-   _Note: It doesn't matter which motor wire is connected to 3 or 6, although this will affect the direction. When you've set up a [Python script](#python-scripts), if `spin_clockwise` makes the motor spin anti-clockwise, the two motor wires should be swapped._
+   _Note: It doesn't matter which motor wire is connected to 3 or 6, although this will affect the direction. When you've set up a [Python script](#python-scripts), if `clockwise()` makes the motor spin anti-clockwise, the two motor wires should be swapped._
 
 4. ### Adding another motor (optional)
 
@@ -119,7 +118,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 
 ## Python Scripts
 
-1. ### Import the module:
+1. ### Import the module
    
    ```import l293d.driver as l293d```
 
@@ -129,19 +128,19 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    
    ```motor1 = l293d.motor(22, 18, 16)```
    
-   'motor1' is what we're calling the motor. You can call it whatever you want, for example `wheel_motor`, `london-eye` or `evil_avocado`.
+   'motor1' is what we're calling the motor. You can call it whatever you want, for example `wheel_motor`, `london_eye` or `evil_avocado`.
    
    The numbers correspond to which GPIO pins are connected to L293D pins 1, 2 and 7 repectively: the pins we set up in [Hardware Setup](#hardware-setup).
 
-3. ### Once you've defined your motor(s), you're ready to make them spin!
+3. ### Control motors
    
-   There are few commands for this, namely:
+   The statements to make the motor(s) spin are as follows:
    
-   - `motor1.spin_clockwise()`
-   - `motor1.spin_anticlockwise()`
+   - `motor1.clockwise()`
+   - `motor1.anticlockwise()`
    - `motor1.stop()`
    
-   If, `spin_clockwise` and `spin_anticlockwise` spin the motor the wrong way, swap the two motor connections to the L293D chip, as explained in [Hardware Setup: Adding a motor](#adding-a-motor).
+   If, `clockwise()` and `anticlockwise()` spin the motor the wrong way, swap the two motor connections to the L293D chip, as explained in [Hardware Setup: Adding a motor](#adding-a-motor).
 
 4. ### Cleanup
    
