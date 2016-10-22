@@ -49,7 +49,7 @@ pins_in_use = [] # Lists pins in use (all motors)
 
 class motor(object):
     """
-    A motor wired to the L293D chip where
+    A class for a motor wired to the L293D chip where
     motor_pins[0] is pinA is L293D pin1 or pin9  : On or off
     motor_pins[1] is pinB is L293D pin2 or pin10 : Anticlockwise positive
     motor_pins[2] is pinC is L293D pin7 or pin15 : Clockwise positive
@@ -73,6 +73,7 @@ class motor(object):
 
 
     def pins_are_valid(self, pins, force_selection=False):
+        # Check the pins specified are valid for pin numbering in use
         global pin_numbering
         if pin_numbering == 'BOARD': # Set valid pins for BOARD
             valid_pins = [7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37]
@@ -101,49 +102,65 @@ class motor(object):
 
 
     def drive_motor(self, direction=1, duration=None, wait=True):
+        # Method called by other functions to drive L293D via GPIO
         if not test_mode:
-            if (direction == 0):
+            if (direction == 0): # Then stop motor
                 GPIO.output(self.motor_pins[0], GPIO.LOW)
-            else:
+            else: # Spin motor
+                # Set first direction GPIO level
                 GPIO.output(self.motor_pins[direction], GPIO.HIGH)
+                # Set second direction GPIO level
                 GPIO.output(self.motor_pins[direction*-1], GPIO.LOW)
+                # Turn the motor on
                 GPIO.output(self.motor_pins[0], GPIO.HIGH)
+        # If duration has been specified, sleep then stop
         if (duration is not None) and (direction != 0):
             stop_thread = Thread(target=self.stop, args = (duration, ))
+            # Sleep in thread
             stop_thread.start()
             if wait:
+                # If wait is true, the main thread is blocked
                 stop_thread.join()
 
 
     def pins_string_list(self):
+        # Return readable list of pins
         return '[{}, {} and {}]'.format(*self.motor_pins)
 
 
     def spin_clockwise(self, duration=None, wait=True):
+        # Uses drive_motor to spin motor clockwise
         if verbose: print('spinning motor at {0} pins {1} clockwise.'.format(pin_numbering, self.pins_string_list()))
         self.drive_motor(direction=1, duration=duration, wait=wait)
 
 
     def spin_anticlockwise(self, duration=None, wait=True):
+        # Uses drive_motor to spin motor anticlockwise
         if verbose: print('spinning motor at {0} pins {1} anticlockwise.'.format(pin_numbering, self.pins_string_list()))
         self.drive_motor(direction=-1, duration=duration, wait=wait)
     
     
     def clockwise(self, duration=None, wait=True):
+        # Calls spin_clockwise
         self.spin_clockwise(duration, wait)
     
     
     def anticlockwise(self, duration=None, wait=True):
+        # Calls spin_anticlockwise
         self.spin_anticlockwise(duration, wait)
 
 
     def stop(self, after=0):
+        # If 'after' is specified, sleep for amount of time
         if after > 0: sleep(after)
+        # Verbose output
         if verbose: print('stopping motor at {0} pins {1}.'.format(pin_numbering, self.pins_string_list()))
+        # Call drive_motor to stop motor after sleep
         if not test_mode: self.drive_motor(direction=0, duration=after, wait=True)
 
 
 def cleanup():
+    # Call GPIO cleanup method
     if not test_mode:
         try:
             GPIO.cleanup()
@@ -151,5 +168,6 @@ def cleanup():
         except:
             if verbose: print('GPIO cleanup failed.')
     else:
+        # Skip GPIO cleanup if GPIO calls are not being made (test_mode)
         if verbose: print('Cleanup not needed when test_mode is enabled.')
 
