@@ -2,6 +2,7 @@
 from l293d import version
 
 from distutils.core import setup,Extension
+
 setup(
     name = "l293d",
     version = version.num,
@@ -13,4 +14,7 @@ setup(
     url = "https://github.com/jamesevickery/l293d",
     download_url = "https://github.com/jamesevickery/l293d/tarball/master",
     packages=['l293d'],
+    install_requires=[
+          'python-dev', 'python-pip', 'python-yaml',
+      ],
 )
