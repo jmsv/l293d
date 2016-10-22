@@ -2,6 +2,7 @@
 from l293d import version
 
 from distutils.core import setup,Extension
+
 setup(
     name = "l293d",
     version = version.num,
@@ -12,4 +13,7 @@ setup(
     keywords = "raspberry pi gpio l293d chip motor driver",
     url = "https://github.com/jamesevickery/l293d",
     packages=['l293d'],
+    install_requires=[
+          'python-dev', 'python-pip', 'python-yaml',
+      ],
 )
