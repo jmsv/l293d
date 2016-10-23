@@ -1,8 +1,11 @@
-config_path = '' # Custom config filepath
-#^ For example: '/home/arthurdent/configs/l293d.yaml'
-
-
 import os
+import yaml
+
+# Custom config filepath
+config_path = ''
+# ^ For example: '/home/arthurdent/configs/l293d.yaml'
+
+
 # If no custom path, user's home directory is used
 if not config_path:
     # Get user home location and append filename.extension
@@ -23,14 +26,13 @@ if (not config_path_exists):
     # Read file to config contents, then close
     config_contents = default_file.read()
     default_file.close()
-    
+
     # Write to user config at config path
     new_file = open(config_path, 'w')
     new_file.write(config_contents)
     new_file.close()
 
 
-import yaml
 # https://martin-thoma.com/configuration-files-in-python/#yaml
 # Open and load YAML config file
 try:
@@ -38,7 +40,8 @@ try:
     with open(config_path, 'r') as ymlfile:
         config = yaml.load(ymlfile)
 except:
-    raise IOError('Error loading config from: {}. Check config exists.'.format(config_path))
+    raise IOError('Error loading config from: {}. Check config exists.'.format(
+        config_path))
 
 
 # Assign loaded YAML to config variables
