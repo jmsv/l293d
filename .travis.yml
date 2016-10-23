@@ -5,6 +5,8 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y python-dev python-pip python-yaml
 install:
+  - pip install flake8
   - sudo python setup.py install
 script:
+  - flake8 .
   - echo "to be continued..."
