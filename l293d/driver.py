@@ -67,8 +67,9 @@ class motor(object):
 
         # Check pins are valid
         self.pins_are_valid(self.motor_pins)
-        # Append global list of pins in use
-        pins_in_use.append(self.motor_pins)
+        # Append to global list of pins in use
+        for pin in self.motor_pins:
+            pins_in_use.append(pin)
         # Set up GPIO mode for pins
         self.gpio_setup(self.motor_pins)
 
@@ -82,7 +83,9 @@ class motor(object):
                 7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37
             ]
         elif pin_numbering == 'BCM':  # Set valid pins for BCM
-            valid_pins = [4, 5, 6, 12, 13, 16, 17, 18, 22, 23, 24, 25, 26, 27]
+            valid_pins = [
+              4, 5, 6, 12, 13, 16, 17, 18, 22, 23, 24, 25, 26, 27
+            ]
         else:  # pin_numbering value invalid
             raise ValueError("pin_numbering must be either 'BOARD' or 'BCM'.")
         for pin in pins:
@@ -93,10 +96,10 @@ class motor(object):
                     "\nTo use selected pins anyway, set force_selection=True "
                     "in function call." % str(valid_pins))
                 raise ValueError(errStr)
-            for pin_in_use in pins_in_use:
-                if pin_int in pin_in_use:
+            for pin in pins_in_use:
+                if (pin in pins):
                     raise ValueError('GPIO pin {} already in use.'.format(
-                        pin_int))
+                        str(pin)))
         self.motor_pins = pins
         return True
 
