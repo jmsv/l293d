@@ -1,6 +1,8 @@
 # L293D driver
 *Python module to drive DC motors from a Raspberry Pi using the L293D chip*
 
+__The master branch is being used for ongoing development. For the lastest stable version, see the v0.1.8 branch.__
+
 [![Build Status](https://travis-ci.org/jamesevickery/l293d.svg?branch=master)](https://travis-ci.org/jamesevickery/l293d)
 
 
