@@ -22,6 +22,9 @@ To install the Python library:
 
 1. ### Clone code from GitHub
         $ git clone https://github.com/jamesevickery/l293d.git
+        $ git checkout v0.1.7
+       
+       This clones the repository and then checks out the v0.1.7 branch. run `git checkout master` to switch back to the master (ongoing development) branch.
 
 2. ### Navigate to the l293d folder
 
