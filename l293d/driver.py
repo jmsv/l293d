@@ -59,6 +59,8 @@ class motor(object):
     # List of pins in use by motor object
     motor_pins = [0 for x in range(3)]
 
+    exists = True  # Used by 'delete' method
+
     def __init__(self, pinA=0, pinB=0, pinC=0):
         # Assign parameters to list
         self.motor_pins[0] = pinA
@@ -101,6 +103,7 @@ class motor(object):
                     raise ValueError('GPIO pin {} already in use.'.format(
                         str(pin)))
         self.motor_pins = pins
+        self.exists = True
         return True
 
     def gpio_setup(self, pins):
@@ -115,6 +118,7 @@ class motor(object):
         '''
         Method called by other functions to drive L293D via GPIO
         '''
+        self.check()
         if not test_mode:
             if (direction == 0):  # Then stop motor
                 GPIO.output(self.motor_pins[0], GPIO.LOW)
@@ -144,6 +148,7 @@ class motor(object):
         '''
         Uses drive_motor to spin motor clockwise
         '''
+        self.check()
         if verbose:
             print('spinning motor at {0} pins {1} clockwise.'.format(
                 pin_numbering, self.pins_string_list()))
@@ -153,6 +158,7 @@ class motor(object):
         '''
         Uses drive_motor to spin motor anticlockwise
         '''
+        self.check()
         if verbose:
             print('spinning motor at {0} pins {1} anticlockwise.'.format(
                 pin_numbering, self.pins_string_list()))
@@ -162,18 +168,21 @@ class motor(object):
         '''
         Calls spin_clockwise
         '''
+        self.check()
         self.spin_clockwise(duration, wait)
 
     def anticlockwise(self, duration=None, wait=True):
         '''
         Calls spin_anticlockwise
         '''
+        self.check()
         self.spin_anticlockwise(duration, wait)
 
     def stop(self, after=0):
         '''
         If 'after' is specified, sleep for amount of time
         '''
+        self.check()
         if after > 0:
             sleep(after)
         # Verbose output
@@ -183,6 +192,29 @@ class motor(object):
         # Call drive_motor to stop motor after sleep
         if not test_mode:
             self.drive_motor(direction=0, duration=after, wait=True)
+
+    def remove(self):
+        '''
+        Remove motor
+        '''
+        if self.exists:
+            global pins_in_use
+            for m_pin in self.motor_pins:
+                if m_pin in pins_in_use:
+                    pins_in_use.remove(m_pin)
+            self.exists = False
+        else:
+            if verbose:
+                print('Motor has already been removed')
+
+    def check(self):
+        '''
+        Check the motor exists. If not, an exception is raised
+        '''
+        if not self.exists:
+            raise ValueError('Motor has been removed. '
+                             'If you wish to use this motor again, '
+                             'you must redefine it.')
 
 
 def cleanup():
