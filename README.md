@@ -3,8 +3,7 @@
 
 ### _Version 0.1.7 - Stable_
 
-[![Build Status](https://travis-ci.org/jamesevickery/l293d.svg?branch=master)](https://travis-ci.org/jamesevickery/l293d)
-
+---
 
 ## Contents:
 1. [Installation](#installation)
