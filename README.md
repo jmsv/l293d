@@ -132,7 +132,9 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    
    In this example, the GPIO pin numbers will be the same as listed in [Hardware Setup](#hardware-setup).
    
-   ```motor1 = l293d.motor(22, 18, 16)```
+   ```motor1 = l293d.Motor(22, 18, 16)```
+   
+   *Important note: `.Motor` should only be used for `l293d` versions 0.2.0 onwards. For 0.1.7 or lower, use `.motor`*
    
    'motor1' is what we're calling the motor. You can call it whatever you want, for example `wheel_motor`, `london_eye` or `evil_avocado`.
    
