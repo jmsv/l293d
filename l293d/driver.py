@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 from time import sleep
 from threading import Thread
 
@@ -20,10 +21,11 @@ if verbose:
 # Import GPIO
 try:
     import RPi.GPIO as GPIO
-except Exception as e:
+except Exception as e:  # Too broad an exception clause (PyCharm warning)
     print("Can't import RPi.GPIO. Please (re)install.")
     test_mode = True
     print('Test mode has been enabled. Please view README for more info.')
+
 # Set GPIO warnings based on verbose value
 if not test_mode:
     if verbose:
@@ -48,7 +50,7 @@ if not test_mode:
 pins_in_use = []  # Lists pins in use (all motors)
 
 
-class motor(object):
+class Motor(object):
     """
     A class for a motor wired to the L293D chip where
     motor_pins[0] is pinA is L293D pin1 or pin9  : On or off
@@ -61,11 +63,11 @@ class motor(object):
 
     exists = True  # Used by 'delete' method
 
-    def __init__(self, pinA=0, pinB=0, pinC=0):
+    def __init__(self, pin_a=0, pin_b=0, pin_c=0):
         # Assign parameters to list
-        self.motor_pins[0] = pinA
-        self.motor_pins[1] = pinB
-        self.motor_pins[2] = pinC
+        self.motor_pins[0] = pin_a
+        self.motor_pins[1] = pin_b
+        self.motor_pins[2] = pin_c
 
         # Check pins are valid
         self.pins_are_valid(self.motor_pins)
@@ -76,9 +78,9 @@ class motor(object):
         self.gpio_setup(self.motor_pins)
 
     def pins_are_valid(self, pins, force_selection=False):
-        '''
+        """
         Check the pins specified are valid for pin numbering in use
-        '''
+        """
         global pin_numbering
         if pin_numbering == 'BOARD':  # Set valid pins for BOARD
             valid_pins = [
@@ -86,41 +88,40 @@ class motor(object):
             ]
         elif pin_numbering == 'BCM':  # Set valid pins for BCM
             valid_pins = [
-              4, 5, 6, 12, 13, 16, 17, 18, 22, 23, 24, 25, 26, 27
+                4, 5, 6, 12, 13, 16, 17, 18, 22, 23, 24, 25, 26, 27
             ]
         else:  # pin_numbering value invalid
             raise ValueError("pin_numbering must be either 'BOARD' or 'BCM'.")
         for pin in pins:
             pin_int = int(pin)
-            if (pin_int not in valid_pins) and (force_selection is not True):
-                errStr = (
+            if pin_int not in valid_pins and force_selection is False:
+                err_str = (
                     "GPIO pin number must be from list of valid pins: %s"
                     "\nTo use selected pins anyway, set force_selection=True "
                     "in function call." % str(valid_pins))
-                raise ValueError(errStr)
-            for pin in pins_in_use:
-                if (pin in pins):
-                    raise ValueError('GPIO pin {} already in use.'.format(
-                        str(pin)))
+                raise ValueError(err_str)
+            if pin in pins_in_use:
+                raise ValueError('GPIO pin {} already in use.'.format(pin))
         self.motor_pins = pins
         self.exists = True
         return True
 
-    def gpio_setup(self, pins):
-        '''
+    @staticmethod
+    def gpio_setup(pins):
+        """
         Set GPIO.OUT for each pin in use
-        '''
+        """
         for pin in pins:
             if not test_mode:
                 GPIO.setup(pin, GPIO.OUT)
 
     def drive_motor(self, direction=1, duration=None, wait=True):
-        '''
+        """
         Method called by other functions to drive L293D via GPIO
-        '''
+        """
         self.check()
         if not test_mode:
-            if (direction == 0):  # Then stop motor
+            if direction == 0:  # Then stop motor
                 GPIO.output(self.motor_pins[0], GPIO.LOW)
             else:  # Spin motor
                 # Set first direction GPIO level
@@ -130,8 +131,8 @@ class motor(object):
                 # Turn the motor on
                 GPIO.output(self.motor_pins[0], GPIO.HIGH)
         # If duration has been specified, sleep then stop
-        if (duration is not None) and (direction != 0):
-            stop_thread = Thread(target=self.stop, args=(duration, ))
+        if duration is not None and direction != 0:
+            stop_thread = Thread(target=self.stop, args=(duration,))
             # Sleep in thread
             stop_thread.start()
             if wait:
@@ -139,15 +140,15 @@ class motor(object):
                 stop_thread.join()
 
     def pins_string_list(self):
-        '''
+        """
         Return readable list of pins
-        '''
+        """
         return '[{}, {} and {}]'.format(*self.motor_pins)
 
     def spin_clockwise(self, duration=None, wait=True):
-        '''
+        """
         Uses drive_motor to spin motor clockwise
-        '''
+        """
         self.check()
         if verbose:
             print('spinning motor at {0} pins {1} clockwise.'.format(
@@ -155,9 +156,9 @@ class motor(object):
         self.drive_motor(direction=1, duration=duration, wait=wait)
 
     def spin_anticlockwise(self, duration=None, wait=True):
-        '''
+        """
         Uses drive_motor to spin motor anticlockwise
-        '''
+        """
         self.check()
         if verbose:
             print('spinning motor at {0} pins {1} anticlockwise.'.format(
@@ -165,23 +166,23 @@ class motor(object):
         self.drive_motor(direction=-1, duration=duration, wait=wait)
 
     def clockwise(self, duration=None, wait=True):
-        '''
+        """
         Calls spin_clockwise
-        '''
+        """
         self.check()
         self.spin_clockwise(duration, wait)
 
     def anticlockwise(self, duration=None, wait=True):
-        '''
+        """
         Calls spin_anticlockwise
-        '''
+        """
         self.check()
         self.spin_anticlockwise(duration, wait)
 
     def stop(self, after=0):
-        '''
+        """
         If 'after' is specified, sleep for amount of time
-        '''
+        """
         self.check()
         if after > 0:
             sleep(after)
@@ -194,9 +195,9 @@ class motor(object):
             self.drive_motor(direction=0, duration=after, wait=True)
 
     def remove(self):
-        '''
+        """
         Remove motor
-        '''
+        """
         if self.exists:
             global pins_in_use
             for m_pin in self.motor_pins:
@@ -208,9 +209,9 @@ class motor(object):
                 print('Motor has already been removed')
 
     def check(self):
-        '''
+        """
         Check the motor exists. If not, an exception is raised
-        '''
+        """
         if not self.exists:
             raise ValueError('Motor has been removed. '
                              'If you wish to use this motor again, '
@@ -218,15 +219,15 @@ class motor(object):
 
 
 def cleanup():
-    '''
+    """
     Call GPIO cleanup method
-    '''
+    """
     if not test_mode:
         try:
             GPIO.cleanup()
             if verbose:
                 print('GPIO cleanup successful.')
-        except:
+        except:  # Too broad an exception clause (PyCharm warning)
             if verbose:
                 print('GPIO cleanup failed.')
     else:
