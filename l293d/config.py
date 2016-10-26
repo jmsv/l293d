@@ -10,7 +10,7 @@ if not config_path:
     config_path = os.path.expanduser('~') + '/l293d-config.yaml'
 
 config_path_exists = os.path.exists(config_path)
-if (not config_path_exists):
+if not config_path_exists:
     # Load default config
     default_file_path = str(os.path.realpath(__file__))
     # Get path of this file, and remove filename
