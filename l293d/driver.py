@@ -6,7 +6,7 @@ from time import sleep
 from threading import Thread
 
 # Load config
-import config
+import l293d.config as config
 
 verbose = config.verbose
 test_mode = config.test_mode
@@ -14,14 +14,14 @@ pin_numbering = config.pin_numbering
 
 # Print version
 if verbose:
-    import version
+    import l293d.version as version
 
     print('L293D driver version ' + version.num)
 
 # Import GPIO
 try:
     import RPi.GPIO as GPIO
-except Exception as e:  # Too broad an exception clause (PyCharm warning)
+except ImportError:  # Too broad an exception clause (PyCharm warning)
     print("Can't import RPi.GPIO. Please (re)install.")
     test_mode = True
     print('Test mode has been enabled. Please view README for more info.')
