@@ -3,7 +3,7 @@
 
 ---
 
-__The master branch is being used for ongoing development. For the lastest stable version, see the [v0.1.7 branch](https://github.com/jamesevickery/l293d/tree/v0.1.7).__
+__This README is for ongoing development of version 0.2.0 onwards. For documentation on the latest stable release, see the [v0.1.7 branch](https://github.com/jamesevickery/l293d/blob/v0.1.7/README.md)__
 
 If you have any ideas or suggestions, please open an issue.
 
