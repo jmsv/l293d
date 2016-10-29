@@ -2,10 +2,10 @@
 # --------------------------------------------------
 
 verbose: true
-#^ Prints stuff to the terminal
+#^ Prints to console when true
 
 test_mode: false
-#^ Disables GPIO calls when called
+#^ Disables GPIO calls when true
 
 pin_numbering: BOARD
 #^ BOARD or BCM mode - see README
