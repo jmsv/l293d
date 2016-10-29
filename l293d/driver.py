@@ -21,7 +21,7 @@ if verbose:
 # Import GPIO
 try:
     import RPi.GPIO as GPIO
-except ImportError:  # Too broad an exception clause (PyCharm warning)
+except ImportError:
     print("Can't import RPi.GPIO. Please (re)install.")
     test_mode = True
     print('Test mode has been enabled. Please view README for more info.')
@@ -227,7 +227,7 @@ def cleanup():
             GPIO.cleanup()
             if verbose:
                 print('GPIO cleanup successful.')
-        except:  # Too broad an exception clause (PyCharm warning)
+        except:
             if verbose:
                 print('GPIO cleanup failed.')
     else:
