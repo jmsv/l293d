@@ -25,27 +25,43 @@ If you have any ideas or suggestions, please [open an issue](https://github.com/
 To install the Python library:
 
 1. ### Clone code from GitHub
+
         $ git clone https://github.com/jamesevickery/l293d.git
 
 2. ### Navigate to the l293d folder
 
         $ cd l293d/
 
-3. ### Install the library:
+3. ### Install dependencies
 
-        $ sudo apt-get install python-dev python-pip python-yaml
-        $ sudo python setup.py install
+    Python 2:
 
-4. ### Test
+        $ sudo apt-get install python-dev python-pip
+        $ sudo pip install pyyaml
+   
+    Python 3:
 
-        $ python
-        >>> import l293d.driver
-
-   If importing the library forces [test mode](#test-mode), try to install RPi.GPIO:
+        $ sudo apt-get install python3-pip
+        $ sudo pip3 install pyyaml
+    
+    Install RPi.GPIO (Pi only):
 
         $ sudo apt-get install RPi.GPIO
 
-   This should only work on a Raspberry Pi, however other devices may be used to [test the functionality](#test-mode) of this library.
+    Installing `RPi.GPIO` is required to drive motors on the Raspberry Pi, although in other environments, [test mode](#test-mode) is automatically enabled if `RPi.GPIO` isn't found.
+
+4. ### Install the library
+
+        $ sudo python setup.py install
+        
+    Or for use with Python 3, swap `python` for `python3` in the command above.
+
+5. ### Test
+
+        $ python
+        >>> import l293d.driver
+    
+    Again, `python3` may be used instead of `python`, although remember that installations for different Python versions are independent.
 
 
 ## Hardware Setup
