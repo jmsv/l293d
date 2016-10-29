@@ -1,4 +1,14 @@
 import unittest
+from sys import version_info
+
+# Python 2: reload is built-in
+if version_info.major == 3:
+    if version_info.minor < 4:
+        # Python 3.0 - 3.3: deprecated since Python 3.4 in favour of importlib
+        from imp import reload
+    else:
+        # Python 3.4+
+        from importlib import reload
 
 
 class L293DTestCase(unittest.TestCase):
