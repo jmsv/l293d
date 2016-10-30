@@ -6,8 +6,9 @@ from time import sleep
 from threading import Thread
 
 # Load config
-import l293d.config as config
+from l293d.config import L293DConfig
 
+config = L293DConfig()
 verbose = config.verbose
 test_mode = config.test_mode
 pin_numbering = config.pin_numbering

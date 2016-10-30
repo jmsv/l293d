@@ -1,13 +1,6 @@
 #!/usr/bin/env python
 from l293d import version
 
-try:
-    import yaml
-    testyaml = yaml.load('name: value')
-except:
-    raise ImportError('Please install python-yaml '
-                      '(sudo apt-get install python-yaml)')
-
 from distutils.core import setup
 
 setup(
@@ -22,5 +15,5 @@ setup(
     url='https://github.com/jamesevickery/l293d',
     download_url='https://github.com/jamesevickery/l293d/tarball/master',
     packages=['l293d'],
-    package_data={'l293d': ['default_l293d-config.yaml']}
+    package_data={'l293d': ['default_l293d_config.ini']}
 )
