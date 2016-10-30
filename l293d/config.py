@@ -9,6 +9,7 @@ try:
 except ImportError:
     # Python 3
     from configparser import (
+        # SafeConfigParser has been renamed ConfigParser since Python 3.2
         ConfigParser,
         DEFAULTSECT,
         MissingSectionHeaderError,
