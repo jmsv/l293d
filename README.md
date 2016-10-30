@@ -154,7 +154,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    
    'motor1' is what we're calling the motor. You can call it whatever you want, for example `wheel_motor`, `london_eye` or `evil_avocado`.
    
-   The numbers correspond to which GPIO pins are connected to L293D pins 1, 2 and 7 repectively: the pins we set up in [Hardware Setup](#hardware-setup).
+   The numbers correspond to which GPIO pins are connected to L293D pins 1, 2 and 7 respectively: the pins we set up in [Hardware Setup](#hardware-setup).
 
 3. ### Control motors
    
