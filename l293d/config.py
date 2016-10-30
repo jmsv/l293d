@@ -19,8 +19,9 @@ import os
 
 
 class L293DConfig(object):
-    def __init__(self, config_filename='default_l293d_config.ini'):
+    def __init__(self, config_filename='l293d_config.ini'):
         self.config_filename = config_filename
+        self.default_config_filename = 'default_' + config_filename
         if not os.path.exists(self.config_filename):
             # if config file doesn't exist, create a new one
             self.create_config_file()
