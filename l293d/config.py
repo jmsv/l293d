@@ -1,3 +1,9 @@
+import pkg_resources
+resource_package = 'l293d'
+resource_path = 'l293d-config.ini'
+raw_config = pkg_resources.resource_string(resource_package, resource_path)
+
+
 try:
     # Python 2
     from ConfigParser import (
@@ -15,58 +21,54 @@ except ImportError:
         MissingSectionHeaderError,
         NoOptionError
     )
-import os
+import os, StringIO
 
 
 class L293DConfig(object):
-    def __init__(self, config_filename='l293d_config.ini'):
-        self.config_filename = config_filename
-        self.default_config_filename = 'default_' + config_filename
-        if not os.path.exists(self.config_filename):
-            # if config file doesn't exist, create a new one
-            self.create_config_file()
+    def __init__(self):
+        import pkg_resources
+        resource_package = 'l293d'
+        resource_path = 'l293d-config.ini'
+        raw_config = pkg_resources.resource_string(resource_package, resource_path)
+        
+        self.pin_numbering, self.test_mode, self.verbose = self.parse_config(raw_config)
 
-        # load config variables from config file (new or old)
-        self.pin_numbering, self.test_mode, self.verbose = self.parse_config()
+#     def edit_default_config(self, pin_numbering=True, test_mode=False, verbose=True):
+#         """ Edits the configuration file.
 
-        # print('Pin Numbering: {}\nTest Mode: {}\nVerbose: {}'.format(
-        #     self.pin_numbering, self.test_mode, self.verbose
-        # ))
+#         pin_numbering = BOARD
+#         test_mode = False
+#         verbose = True
 
-    def create_config_file(self):
-        """ Creates a new configuration file with the default settings
+#         :return: None
+#         """
+#         with open(self.config_filename, 'w') as config_file:
+#             config = ConfigParser(allow_no_value=True)
+#             config.set(DEFAULTSECT, (
+#                 '; See README.md for more information about config options'))
+#             config.set(DEFAULTSECT, '\n; pin_numbering = (BOARD or BCM)')
+#             config.set(DEFAULTSECT, 'pin_numbering', 'BOARD')
+#             config.set(DEFAULTSECT, '\n; test_mode = (True or False)')
+#             config.set(DEFAULTSECT, 'test_mode', 'False')
+#             config.set(DEFAULTSECT, '\n; verbose = (True or False)')
+#             config.set(DEFAULTSECT, 'verbose', 'True')
+#             config.write(config_file)
 
-        pin_numbering = BOARD
-        test_mode = False
-        verbose = True
-
-        :return: None
-        """
-        with open(self.config_filename, 'w') as config_file:
-            config = ConfigParser(allow_no_value=True)
-            config.set(DEFAULTSECT, (
-                '; See README.md for more information about config options'))
-            config.set(DEFAULTSECT, '\n; pin_numbering = (BOARD or BCM)')
-            config.set(DEFAULTSECT, 'pin_numbering', 'BOARD')
-            config.set(DEFAULTSECT, '\n; test_mode = (True or False)')
-            config.set(DEFAULTSECT, 'test_mode', 'False')
-            config.set(DEFAULTSECT, '\n; verbose = (True or False)')
-            config.set(DEFAULTSECT, 'verbose', 'True')
-            config.write(config_file)
-
-    def parse_config(self):
-        """ Parses the config file and returns a tuple of the three values
+    def parse_config(self, raw_config):
+        """ Parses the config string and returns a tuple of the three values
 
         :return: Tuple[str, bool, bool]
         """
+        
+        buffer = StringIO.StringIO(raw_config)        
         parser = ConfigParser()
+        
         try:
-            parser.read(self.config_filename)
+            parser.readfp(buffer)
         except MissingSectionHeaderError:
             # config file is missing DEFAULT section header
             # create new config file, overwrite broken one
-            self.create_config_file()
-            return self.parse_config()
+            raise MissingSectionHeaderError('Config file broken. Try reinstalling.')
 
         try:
             pin_numbering = parser.get(DEFAULTSECT, 'pin_numbering')

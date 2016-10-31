@@ -15,5 +15,5 @@ setup(
     url='https://github.com/jamesevickery/l293d',
     download_url='https://github.com/jamesevickery/l293d/tarball/master',
     packages=['l293d'],
-    package_data={'l293d': ['default_l293d_config.ini']}
+    package_data={'l293d': ['l293d-config.ini']}
 )
