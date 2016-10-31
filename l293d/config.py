@@ -33,8 +33,10 @@ class L293DConfig(object):
         raw_config = pkg_resources.resource_string(
             resource_package, resource_path)
 
-        self.pin_numbering, self.test_mode,
-        self.verbose = self.parse_config(raw_config)
+        parsed_config = self.parse_config(raw_config)
+        self.pin_numbering = parsed_config[0]
+        self.test_mode = parsed_config[1]
+        self.verbose = parsed_config[2]
 
 #     def edit_default_config(self,
 #             pin_numbering=True, test_mode=False, verbose=True):
