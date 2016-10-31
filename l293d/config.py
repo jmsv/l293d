@@ -1,4 +1,7 @@
-import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 import pkg_resources
 resource_package = 'l293d'
@@ -66,7 +69,7 @@ class L293DConfig(object):
         :return: Tuple[str, bool, bool]
         """
 
-        buffer = StringIO.StringIO(raw_config)
+        buffer = StringIO(raw_config.decode('utf-8'))
         parser = ConfigParser()
 
         try:
