@@ -1,3 +1,5 @@
+import StringIO
+
 import pkg_resources
 resource_package = 'l293d'
 resource_path = 'l293d-config.ini'
@@ -21,7 +23,6 @@ except ImportError:
         MissingSectionHeaderError,
         NoOptionError
     )
-import os, StringIO
 
 
 class L293DConfig(object):
@@ -29,11 +30,14 @@ class L293DConfig(object):
         import pkg_resources
         resource_package = 'l293d'
         resource_path = 'l293d-config.ini'
-        raw_config = pkg_resources.resource_string(resource_package, resource_path)
-        
-        self.pin_numbering, self.test_mode, self.verbose = self.parse_config(raw_config)
+        raw_config = pkg_resources.resource_string(
+            resource_package, resource_path)
 
-#     def edit_default_config(self, pin_numbering=True, test_mode=False, verbose=True):
+        self.pin_numbering, self.test_mode,
+        self.verbose = self.parse_config(raw_config)
+
+#     def edit_default_config(self,
+#             pin_numbering=True, test_mode=False, verbose=True):
 #         """ Edits the configuration file.
 
 #         pin_numbering = BOARD
@@ -59,16 +63,17 @@ class L293DConfig(object):
 
         :return: Tuple[str, bool, bool]
         """
-        
-        buffer = StringIO.StringIO(raw_config)        
+
+        buffer = StringIO.StringIO(raw_config)
         parser = ConfigParser()
-        
+
         try:
             parser.readfp(buffer)
         except MissingSectionHeaderError:
             # config file is missing DEFAULT section header
             # create new config file, overwrite broken one
-            raise MissingSectionHeaderError('Config file broken. Try reinstalling.')
+            raise MissingSectionHeaderError(
+                'Config file broken. Try reinstalling.')
 
         try:
             pin_numbering = parser.get(DEFAULTSECT, 'pin_numbering')
