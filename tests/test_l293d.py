@@ -29,7 +29,7 @@ class L293DTestCase(unittest.TestCase):
         """
         import l293d.driver as d
         print(d.pins_in_use)
-        motor = d.Motor(29, 7, 13)
+        motor = d.DC(29, 7, 13)
         self.assertEqual(motor.pins_string_list(), '[29, 7 and 13]')
         reload(d)
 

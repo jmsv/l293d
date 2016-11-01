@@ -51,7 +51,7 @@ if not test_mode:
 pins_in_use = []  # Lists pins in use (all motors)
 
 
-class Motor(object):
+class DC(object):
     """
     A class for a motor wired to the L293D chip where
     motor_pins[0] is pinA is L293D pin1 or pin9  : On or off
@@ -189,6 +189,19 @@ class Motor(object):
             raise ValueError('Motor has been removed. '
                              'If you wish to use this motor again, '
                              'you must redefine it.')
+
+
+class Motor(object):
+    def __init__(self, pin_a=0, pin_b=0, pin_c=0):
+        raise DeprecationWarning('The Motor class has been deprecated. '
+                                 'Please use \'DC\' or \'Stepper\' instead.')
+
+
+class Stepper(object):
+    def __init__(self):
+        raise FutureWarning('Stepper motors are not yet supported. Go to '
+                            'https://github.com/jamesevickery/l293d/issues/20 '
+                            'for more info')
 
 
 def pins_are_valid(pins, force_selection=False):
