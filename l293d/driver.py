@@ -23,6 +23,7 @@ if verbose:
 try:
     import RPi.GPIO as GPIO
 except ImportError:
+    GPIO = None
     print("Can't import RPi.GPIO. Please (re)install.")
     test_mode = True
     print('Test mode has been enabled. Please view README for more info.')
