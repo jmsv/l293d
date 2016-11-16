@@ -36,12 +36,10 @@ To install the Python library:
     Python 2:
 
         $ sudo apt-get install python-dev python-pip
-        $ sudo pip install pyyaml
    
     Python 3:
 
         $ sudo apt-get install python3-pip
-        $ sudo pip3 install pyyaml
     
     Install RPi.GPIO (Pi only):
 
