@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-from l293d import version
-
-try:
-    import yaml
-    testyaml = yaml.load('name: value')
-except:
-    raise ImportError('Please install python-yaml '
-                      '(sudo apt-get install python-yaml)')
-
 from distutils.core import setup
 
 setup(
