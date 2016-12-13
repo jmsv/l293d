@@ -12,7 +12,7 @@ from distutils.core import setup
 
 setup(
     name='l293d',
-    version=version.num,
+    version='0.1.7',
     author='James Vickery',
     author_email='jamesevickery.dev@gmail.com',
     description=('A Python module to drive motors using '
