@@ -10,7 +10,7 @@ setup(
     license='MIT',
     keywords='raspberry pi gpio l293d chip motor driver',
     url='https://github.com/jamesevickery/l293d',
-    download_url='https://github.com/jamesevickery/l293d/tarball/master',
+    download_url='https://github.com/jamesevickery/l293d/tarball/v0.1.7-release',
     packages=['l293d'],
     package_data={'l293d': ['default_l293d-config.yaml']}
 )
