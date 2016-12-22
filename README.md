@@ -19,22 +19,12 @@
 
 To install the Python library:
 
-1. ### Clone code from GitHub
-        $ git clone https://github.com/jamesevickery/l293d.git
-        $ git checkout v0.1.7
-       
-       This clones the repository and then checks out the v0.1.7 branch. run `git checkout master` to switch back to the master (ongoing development) branch.
+1. ### Install the library:
 
-2. ### Navigate to the l293d folder
+        $ sudo apt-get install python-pip python-yaml
+        $ sudo pip install l293d
 
-        $ cd l293d/
-
-3. ### Install the library:
-
-        $ sudo apt-get install python-dev python-pip python-yaml
-        $ sudo python setup.py install
-
-4. ### Test
+2. ### Test
 
         $ python
         >>> import l293d.driver
