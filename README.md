@@ -3,7 +3,7 @@
 
 ---
 
-__This README is for ongoing development of version 0.2.0 onwards. For documentation on the latest stable release, see the [v0.1.7 branch](https://github.com/jamesevickery/l293d/blob/v0.1.7/README.md)__
+__This README is for ongoing development of version 0.2.X. For documentation on the latest stable release, see the [v0.1.7 branch](https://github.com/jamesevickery/l293d/blob/v0.1.7/README.md)__
 
 If you have any ideas or suggestions, please [open an issue](https://github.com/jamesevickery/l293d/issues/new).
 
