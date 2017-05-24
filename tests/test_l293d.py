@@ -56,6 +56,17 @@ class L293DTestCase(unittest.TestCase):
             self.assertFalse(False)
         reload(d)
 
+    def test_motor_can_be_removed(self):
+        """
+        Test that a motor can be created and removed
+        """
+        import l293d as d
+        original_pins = d.pins_in_use
+        motor = d.DC(29, 7, 13)
+        motor.remove()
+        self.assertEqual(d.pins_in_use, original_pins)
+        reload(d)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -7,12 +7,39 @@ from threading import Thread
 
 version_num = '0.2.3'
 
-verbose = True
-test_mode = False
-pin_numbering = 'BOARD'
+
+class Config(object):
+    __verbose = True
+    __test_mode = False
+    __pin_numbering = 'BOARD'
+
+    @staticmethod
+    def set_verbose(value):
+        Config.__verbose = value
+
+    @staticmethod
+    def get_verbose():
+        return Config.__verbose
+
+    @staticmethod
+    def set_test_mode(value):
+        Config.__test_mode = value
+
+    @staticmethod
+    def get_test_mode():
+        return Config.__test_mode
+
+    @staticmethod
+    def set_pin_numbering(value):
+        Config.__pin_numbering = value
+
+    @staticmethod
+    def get_pin_numbering():
+        return Config.__pin_numbering
+
 
 # Print version
-if verbose:
+if Config.get_verbose():
     print('L293D driver version ' + version_num)
 
 # Import GPIO
@@ -21,24 +48,24 @@ try:
 except ImportError:
     GPIO = None
     print("Can't import RPi.GPIO. Please (re)install.")
-    test_mode = True
+    Config.set_test_mode(True)
     print('Test mode has been enabled. Please view README for more info.')
 
 # Set GPIO warnings based on verbose value
-if not test_mode:
-    if verbose:
+if not Config.get_test_mode():
+    if Config.get_verbose():
         GPIO.setwarnings(True)
     else:
         GPIO.setwarnings(False)
 
 # Set GPIO mode
-if not test_mode:
-    if pin_numbering == 'BOARD':
-        if verbose:
+if not Config.get_test_mode():
+    if Config.get_pin_numbering() == 'BOARD':
+        if Config.get_verbose():
             print('Setting GPIO mode: BOARD')
         GPIO.setmode(GPIO.BOARD)
-    elif pin_numbering == 'BCM':
-        if verbose:
+    elif Config.get_pin_numbering() == 'BCM':
+        if Config.get_verbose():
             print('Setting GPIO mode: BCM')
         GPIO.setmode(GPIO.BCM)
     else:
@@ -59,13 +86,15 @@ class DC(object):
     # List of pins in use by motor object
     motor_pins = [0 for x in range(3)]
 
-    exists = True  # Used by 'delete' method
+    exists = True  # Used by 'remove' method
 
     def __init__(self, pin_a=0, pin_b=0, pin_c=0):
         # Assign parameters to list
         self.motor_pins[0] = pin_a
         self.motor_pins[1] = pin_b
         self.motor_pins[2] = pin_c
+
+        self.pin_numbering = Config.get_pin_numbering()
 
         # Check pins are valid
         if pins_are_valid(self.motor_pins):
@@ -82,7 +111,7 @@ class DC(object):
         Set GPIO.OUT for each pin in use
         """
         for pin in pins:
-            if not test_mode:
+            if not Config.get_test_mode():
                 GPIO.setup(pin, GPIO.OUT)
 
     def drive_motor(self, direction=1, duration=None, wait=True):
@@ -90,7 +119,7 @@ class DC(object):
         Method called by other functions to drive L293D via GPIO
         """
         self.check()
-        if not test_mode:
+        if not Config.get_test_mode():
             if direction == 0:  # Then stop motor
                 GPIO.output(self.motor_pins[0], GPIO.LOW)
             else:  # Spin motor
@@ -120,9 +149,9 @@ class DC(object):
         Uses drive_motor to spin motor clockwise
         """
         self.check()
-        if verbose:
+        if Config.get_verbose():
             print('spinning motor at {0} pins {1} clockwise.'.format(
-                pin_numbering, self.pins_string_list()))
+                self.pin_numbering, self.pins_string_list()))
         self.drive_motor(direction=1, duration=duration, wait=wait)
 
     def spin_anticlockwise(self, duration=None, wait=True):
@@ -130,9 +159,9 @@ class DC(object):
         Uses drive_motor to spin motor anticlockwise
         """
         self.check()
-        if verbose:
+        if Config.get_verbose():
             print('spinning motor at {0} pins {1} anticlockwise.'.format(
-                pin_numbering, self.pins_string_list()))
+                self.pin_numbering, self.pins_string_list()))
         self.drive_motor(direction=-1, duration=duration, wait=wait)
 
     def clockwise(self, duration=None, wait=True):
@@ -157,11 +186,11 @@ class DC(object):
         if after > 0:
             sleep(after)
         # Verbose output
-        if verbose:
+        if Config.get_verbose():
             print('stopping motor at {0} pins {1}.'.format(
-                pin_numbering, self.pins_string_list()))
+                self.pin_numbering, self.pins_string_list()))
         # Call drive_motor to stop motor after sleep
-        if not test_mode:
+        if not Config.get_test_mode():
             self.drive_motor(direction=0, duration=after, wait=True)
 
     def remove(self):
@@ -175,7 +204,7 @@ class DC(object):
                     pins_in_use.remove(m_pin)
             self.exists = False
         else:
-            if verbose:
+            if Config.get_verbose():
                 print('Motor has already been removed')
 
     def check(self):
@@ -205,12 +234,12 @@ def pins_are_valid(pins, force_selection=False):
     """
     Check the pins specified are valid for pin numbering in use
     """
-    global pin_numbering
-    if pin_numbering == 'BOARD':  # Set valid pins for BOARD
+    # Pin numbering, used below, should be a parameter of this function (future)
+    if Config.get_pin_numbering() == 'BOARD':  # Set valid pins for BOARD
         valid_pins = [
             7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37
         ]
-    elif pin_numbering == 'BCM':  # Set valid pins for BCM
+    elif Config.get_pin_numbering() == 'BCM':  # Set valid pins for BCM
         valid_pins = [
             4, 5, 6, 12, 13, 16, 17, 18, 22, 23, 24, 25, 26, 27
         ]
@@ -233,15 +262,15 @@ def cleanup():
     """
     Call GPIO cleanup method
     """
-    if not test_mode:
+    if not Config.get_test_mode():
         try:
             GPIO.cleanup()
-            if verbose:
+            if Config.get_verbose():
                 print('GPIO cleanup successful.')
         except:
-            if verbose:
+            if Config.get_verbose():
                 print('GPIO cleanup failed.')
     else:
         # Skip GPIO cleanup if GPIO calls are not being made (test_mode)
-        if verbose:
+        if Config.get_verbose():
             print('Cleanup not needed when test_mode is enabled.')
