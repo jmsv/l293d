@@ -201,11 +201,9 @@ If you have any ideas that would make this library even more beautiful, please [
 
 Feel free to contact me if you have any questions about use or development of `l293d`. Either [submit an issue](https://github.com/jamesevickery/l293d/issues), email me at jamesevickery.dev@gmail.com or tweet/DM me [on Twitter](https://twitter.com/jamesevickery).
 
-If you'd like to support my open-source development while I'm a poor university student, please click the button below:
+If you'd like to support my open-source development while I'm a poor university student, feel free to buy me a coffee! :smile:
 
-[![donate](https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=US7C2KB9YZUBJ)
-
-(Even if you only give me 75p or something - I can probably find a bag of pasta for that much)
+[![buy me a coffee](http://i.imgur.com/kM1JXAl.jpg)](https://ko-fi.com/jamesv)
 
 
 ## License
