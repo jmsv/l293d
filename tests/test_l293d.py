@@ -18,10 +18,10 @@ class L293DTestCase(unittest.TestCase):
         If the import fails, an exception is
         raised and the assertion is never reached
         """
-        import l293d
-        print(str(l293d))
+        import l293d as d
+        print(str(d))
         self.assertTrue(True)
-        reload(l293d)  # Revert changes
+        reload(d.driver)  # Revert changes
 
     def test_pins_string_list(self):
         """
@@ -31,7 +31,7 @@ class L293DTestCase(unittest.TestCase):
         print(d.pins_in_use)
         motor = d.DC(29, 7, 13)
         self.assertEqual(motor.pins_string_list(), '[29, 7 and 13]')
-        reload(d)
+        reload(d.driver)
 
     def test_pins_are_valid_board_1(self):
         """
@@ -40,7 +40,7 @@ class L293DTestCase(unittest.TestCase):
         import l293d as d
         d.pins_in_use = [7, 11, 12, 13, 15, 29, 31, 32, 33, 36, 37]
         self.assertTrue(d.pins_are_valid([22, 18, 16]))
-        reload(d)
+        reload(d.driver)
 
     def test_pins_are_valid_board_2(self):
         """
@@ -54,7 +54,7 @@ class L293DTestCase(unittest.TestCase):
                 self.assertFalse(True)
         except:
             self.assertFalse(False)
-        reload(d)
+        reload(d.driver)
 
     def test_motor_can_be_removed(self):
         """
@@ -65,7 +65,26 @@ class L293DTestCase(unittest.TestCase):
         motor = d.DC(29, 7, 13)
         motor.remove()
         self.assertEqual(d.pins_in_use, original_pins)
-        reload(d)
+        reload(d.driver)
+
+    def test_pin_numbering_lock(self):
+        """"
+        Test that pin_numbering can't be changed after a motor's definition
+        """
+        import l293d as d
+        d.Config.set_pin_numbering('BcM')
+        m1 = d.DC(4, 5, 6)
+        error = 'No error'
+        try:
+            d.Config.set_pin_numbering('BoaRD')
+        except ValueError as e:
+            error = str(e)
+        self.assertEquals(
+            error, 'Pin numbering format cannot be changed '
+                   'if motors already exist. Set this at '
+                   'the start of your script.')
+        m1.remove()
+        reload(d.driver)
 
 
 if __name__ == '__main__':

@@ -15,7 +15,10 @@ class Config(object):
 
     @staticmethod
     def set_verbose(value):
-        Config.__verbose = value
+        if type(value) == bool:
+            Config.__verbose = value
+        else:
+            raise TypeError('verbose must be either True or False')
 
     @staticmethod
     def get_verbose():
@@ -23,7 +26,10 @@ class Config(object):
 
     @staticmethod
     def set_test_mode(value):
-        Config.__test_mode = value
+        if type(value) == bool:
+            Config.__test_mode = value
+        else:
+            raise TypeError('test_mode must be either True or False')
 
     @staticmethod
     def get_test_mode():
@@ -31,7 +37,20 @@ class Config(object):
 
     @staticmethod
     def set_pin_numbering(value):
+        if type(value) != str:
+            raise TypeError('pin_numbering must be a string:'
+                            '\'BOARD\' or \'BCM\'')
+        value = str(value).upper()
+        if pins_in_use:
+            raise ValueError('Pin numbering format cannot be changed '
+                             'if motors already exist. Set this at '
+                             'the start of your script.')
+        if not (value == 'BOARD' or value == 'BCM'):
+            raise ValueError(
+                'Pin numbering format must be \'BOARD\' or \'BCM\'')
         Config.__pin_numbering = value
+        print("Pin numbering format set: " + value)
+        return value
 
     @staticmethod
     def get_pin_numbering():

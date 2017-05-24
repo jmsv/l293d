@@ -8,6 +8,7 @@ __This README is for ongoing development of version 0.2.X. For documentation on 
 If you have any ideas or suggestions, please [open an issue](https://github.com/jamesevickery/l293d/issues/new).
 
 [![Build Status](https://travis-ci.org/jamesevickery/l293d.svg?branch=master)](https://travis-ci.org/jamesevickery/l293d)
+[![Documentation Status](https://readthedocs.org/projects/l293d/badge/?version=latest)](http://l293d.readthedocs.io/en/latest/?badge=latest)
 
 
 ## Contents:
