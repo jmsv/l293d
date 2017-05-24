@@ -56,7 +56,7 @@ To install the Python library:
 5. ### Test
 
         $ python
-        >>> import l293d.driver
+        >>> import l293d
     
     Again, `python3` may be used instead of `python`, although remember that installations for different Python versions are independent.
 
@@ -139,15 +139,15 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 
 1. ### Import the module
    
-   ```import l293d.driver as l293d```
+   ```import l293d```
 
 2. ### Define motors
    
    In this example, the GPIO pin numbers will be the same as listed in [Hardware Setup](#hardware-setup).
    
-   ```motor1 = l293d.Motor(22, 18, 16)```
+   ```motor1 = l293d.DC(22, 18, 16)```
    
-   *Important note: `.Motor` should only be used for `l293d` versions 0.2.0 onwards. For 0.1.7 or lower, use `.motor`*
+   *Important note: `.DC` should only be used from version 0.2.2 onwards, `.Motor` should only be used for version 0.2.0 onwards and older versions: 0.1.7 or lower, use `.motor`.*
    
    'motor1' is what we're calling the motor. You can call it whatever you want, for example `wheel_motor`, `london_eye` or `evil_avocado`.
    
