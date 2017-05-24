@@ -1,15 +1,15 @@
-site_name: MkDocs
-site_url: http://www.mkdocs.org
-site_description: Project documentation with Markdown.
-site_author: MkDocs Team
+site_name: l293d
+site_url: https://jamesevickery.github.io/l293d/
+site_description: Python module to drive DC motors from a Raspberry Pi using the L293D chip
+site_author: James Vickery
 
-repo_url: https://github.com/mkdocs/mkdocs/
+repo_url: https://github.com/jamesevickery/l293d
 
 pages:
 - Home: index.md
 - User Guide:
     - Installation: installation.md
-    - Hardware Setup: hardware-setup
+    - Hardware Setup: hardware-setup.md
     - Python Scripts: python-scripts.md
     - Configuration: configuration.md
 - About:
