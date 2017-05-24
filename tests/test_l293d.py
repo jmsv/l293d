@@ -18,16 +18,16 @@ class L293DTestCase(unittest.TestCase):
         If the import fails, an exception is
         raised and the assertion is never reached
         """
-        import l293d.driver
-        print(str(l293d.driver))
+        import l293d
+        print(str(l293d))
         self.assertTrue(True)
-        reload(l293d.driver)  # Revert changes
+        reload(l293d)  # Revert changes
 
     def test_pins_string_list(self):
         """
         Test that the list of pins is returned correctly
         """
-        import l293d.driver as d
+        import l293d as d
         print(d.pins_in_use)
         motor = d.DC(29, 7, 13)
         self.assertEqual(motor.pins_string_list(), '[29, 7 and 13]')
@@ -37,7 +37,7 @@ class L293DTestCase(unittest.TestCase):
         """
         Test for valid pins when all others are in use
         """
-        import l293d.driver as d
+        import l293d as d
         d.pins_in_use = [7, 11, 12, 13, 15, 29, 31, 32, 33, 36, 37]
         self.assertTrue(d.pins_are_valid([22, 18, 16]))
         reload(d)
@@ -46,7 +46,7 @@ class L293DTestCase(unittest.TestCase):
         """
         Test for valid pins when a pin is already in use
         """
-        import l293d.driver as d
+        import l293d as d
         d.pins_in_use = [7, 11, 12]
         try:
             valid = d.pins_are_valid([31, 36, 11])
