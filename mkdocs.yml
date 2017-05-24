@@ -1,0 +1,18 @@
+site_name: MkDocs
+site_url: http://www.mkdocs.org
+site_description: Project documentation with Markdown.
+site_author: MkDocs Team
+
+repo_url: https://github.com/mkdocs/mkdocs/
+
+pages:
+- Home: index.md
+- User Guide:
+    - Installation: installation.md
+    - Hardware Setup: hardware-setup
+    - Python Scripts: python-scripts.md
+    - Configuration: configuration.md
+- About:
+    - Support: support.md
+    - Sources: sources.md
+    - License: license.md
