@@ -234,7 +234,8 @@ def pins_are_valid(pins, force_selection=False):
     """
     Check the pins specified are valid for pin numbering in use
     """
-    # Pin numbering, used below, should be a parameter of this function (future)
+    # Pin numbering, used below, should be
+    # a parameter of this function (future)
     if Config.get_pin_numbering() == 'BOARD':  # Set valid pins for BOARD
         valid_pins = [
             7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37
