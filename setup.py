@@ -1,11 +1,9 @@
 #!/usr/bin/env python
-from l293d import version
-
 from distutils.core import setup
 
 setup(
     name='l293d',
-    version=version.num,
+    version='0.2.3',
     author='James Vickery',
     author_email='jamesevickery.dev@gmail.com',
     description=('A Python module to drive motors using '
@@ -14,6 +12,5 @@ setup(
     keywords='raspberry pi gpio l293d chip motor driver',
     url='https://github.com/jamesevickery/l293d',
     download_url='https://github.com/jamesevickery/l293d/tarball/master',
-    packages=['l293d'],
-    package_data={'l293d': ['l293d-config.ini']}
+    packages=['l293d']
 )

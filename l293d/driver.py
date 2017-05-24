@@ -5,19 +5,15 @@ from __future__ import print_function
 from time import sleep
 from threading import Thread
 
-# Load config
-from l293d.config import L293DConfig
+version_num = '0.2.3'
 
-config = L293DConfig()
-verbose = config.verbose
-test_mode = config.test_mode
-pin_numbering = config.pin_numbering
+verbose = True
+test_mode = False
+pin_numbering = 'BOARD'
 
 # Print version
 if verbose:
-    import l293d.version as version
-
-    print('L293D driver version ' + version.num)
+    print('L293D driver version ' + version_num)
 
 # Import GPIO
 try:
