@@ -1,6 +1,4 @@
-# Configuration
-
-The following config values can be changed after importing `l293d`.
+The following config values change how the module works, and can be changed after importing `l293d`.
 
 ## Test Mode:
 

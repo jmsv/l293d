@@ -1,4 +1,5 @@
-# Python Scripts
+This documentation should help create a basic Python script to get a motor working.
+I'm currently working on better documentation for the methods used, as some have functionality not documented here.
 
 ### 1. Import the module
 
@@ -7,15 +8,15 @@
 
 ### 2. Define motors
 
-In this example, the GPIO pin numbers will be the same as listed in [Hardware Setup](#hardware-setup).
+In this example, the GPIO pin numbers will be the same as listed in [Hardware Setup](hardware-setup.md).
 
     motor1 = l293d.DC(22, 18, 16)
 
-*Important note: `.DC` should only be used from version 0.2.2 onwards, `.Motor` should only be used for version 0.2.0 onwards and older versions: 0.1.7 or lower, use `.motor`.*
+*Note: `.DC` should only be used from version 0.2.2 onwards, `.Motor` should only be used for version 0.2.0 onwards and older versions: 0.1.7 or lower, use `.motor`.*
 
 'motor1' is what we're calling the motor. You can call it whatever you want, for example `wheel_motor`, `london_eye` or `evil_avocado`.
 
-The numbers correspond to which GPIO pins are connected to L293D pins 1, 2 and 7 respectively: the pins we set up in [Hardware Setup](#hardware-setup).
+The numbers correspond to which GPIO pins are connected to L293D pins 1, 2 and 7 respectively: the pins we set up in [Hardware Setup](hardware-setup.md).
 
 
 ### 3. Control motors
@@ -26,7 +27,7 @@ The statements to make the motor(s) spin are as follows:
 - `motor1.anticlockwise()`
 - `motor1.stop()`
 
-If, `clockwise()` and `anticlockwise()` spin the motor the wrong way, swap the two motor connections to the L293D chip, as explained in [Hardware Setup: Adding a motor](#adding-a-motor).
+If, `clockwise()` and `anticlockwise()` spin the motor the wrong way, swap the two motor connections to the L293D chip, as explained in [Hardware Setup: Adding a motor](hardware-setup.md#adding-a-motor).
 
 
 ### 4. Cleanup

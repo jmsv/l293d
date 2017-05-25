@@ -1,5 +1,3 @@
-# Installation
-
 To install the Python library:
 
 ### 1. Clone code from GitHub

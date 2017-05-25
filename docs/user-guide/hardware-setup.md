@@ -1,6 +1,4 @@
-# Hardware Setup
-
-You will need:
+### You will need:
 
 - Raspberry Pi
 - L293D chip(s)

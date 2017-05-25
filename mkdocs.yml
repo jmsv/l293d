@@ -8,11 +8,12 @@ repo_url: https://github.com/jamesevickery/l293d
 pages:
 - Home: index.md
 - User Guide:
-    - Installation: installation.md
-    - Hardware Setup: hardware-setup.md
-    - Python Scripts: python-scripts.md
-    - Configuration: configuration.md
+    - Installation: user-guide/installation.md
+    - Hardware Setup: user-guide/hardware-setup.md
+    - Python Scripts: user-guide/python-scripts.md
+    - Configuration: user-guide/configuration.md
 - About:
-    - Support: support.md
-    - Sources: sources.md
-    - License: license.md
+    - Support: about/support.md
+    - Contributing: about/contributing.md
+    - Sources: about/sources.md
+    - License: about/license.md
