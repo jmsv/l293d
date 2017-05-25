@@ -24,15 +24,15 @@ If you have any ideas or suggestions, please [open an issue](https://github.com/
 
 To install the Python library:
 
-1. ### Clone code from GitHub
+1. **Clone code from GitHub**
 
         $ git clone https://github.com/jamesevickery/l293d.git
 
-2. ### Navigate to the l293d folder
+2. **Navigate to the l293d folder**
 
         $ cd l293d/
 
-3. ### Install dependencies
+3. **Install dependencies**
 
     Python 2:
 
@@ -48,13 +48,13 @@ To install the Python library:
 
     Installing `RPi.GPIO` is required to drive motors on the Raspberry Pi, although in other environments, [test mode](#test-mode) is automatically enabled if `RPi.GPIO` isn't found.
 
-4. ### Install the library
+4. **Install the library**
 
         $ sudo python setup.py install
         
     Or for use with Python 3, swap `python` for `python3` in the command above.
 
-5. ### Test
+5. **Test**
 
         $ python
         >>> import l293d
@@ -74,7 +74,7 @@ You will need:
 
 The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazon](http://www.amazon.co.uk/dp/B008KYMVVY). Unless you intend to use more than two motors, only one driver chip is required; each L293D can drive up to two motors.
 
-1. ### Powering the L293D chip
+1. **Powering the L293D chip**
 
    Power and ground setup - the chip should bridge the middle of the breadboard:
    
@@ -89,7 +89,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 
    ![power pins image](http://i.imgur.com/awtfujg.png?1)
    
-2. ### Data wires
+2. **Data wires**
 
    The GPIO pins used in this example can be substitued for other valid pins, as long as continuity is maintained when [setting up a Python script](#python-scripts).
    
@@ -103,7 +103,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 
    ![data pins image](http://i.imgur.com/h5OQFZT.png?1)
 
-3. ### Adding a motor
+3. **Adding a motor**
 
    - Motor wire 1 → L293D pin 3
    - Motor wire 2 → L293D pin 6
@@ -114,7 +114,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    
    _Note: It doesn't matter which motor wire is connected to 3 or 6, although this will affect the direction. When you've set up a [Python script](#python-scripts), if `clockwise()` makes the motor spin anti-clockwise, the two motor wires should be swapped._
 
-4. ### Adding another motor (optional)
+4. **Adding another motor (optional)**
 
    This is similar to how the first motor was connected, but the other side of the chip is used.
    
@@ -138,11 +138,11 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 
 ## Python Scripts
 
-1. ### Import the module
+1. **Import the module**
    
    ```import l293d```
 
-2. ### Define motors
+2. **Define motors**
    
    In this example, the GPIO pin numbers will be the same as listed in [Hardware Setup](#hardware-setup).
    
@@ -154,7 +154,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    
    The numbers correspond to which GPIO pins are connected to L293D pins 1, 2 and 7 respectively: the pins we set up in [Hardware Setup](#hardware-setup).
 
-3. ### Control motors
+3. **Control motors**
    
    The statements to make the motor(s) spin are as follows:
    
@@ -164,7 +164,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    
    If, `clockwise()` and `anticlockwise()` spin the motor the wrong way, swap the two motor connections to the L293D chip, as explained in [Hardware Setup: Adding a motor](#adding-a-motor).
 
-4. ### Cleanup
+4. **Cleanup**
    
    I recommend that at the end of your script, you include the line: `l293d.cleanup()`, to cleanup the GPIO pins being used by the l293d library. This avoids damage to the GPIO pins; see [here](http://raspi.tv/2013/rpi-gpio-basics-3-how-to-exit-gpio-programs-cleanly-avoid-warnings-and-protect-your-pi).
 
@@ -172,28 +172,32 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 
 ## Configuration
 
+The following config values can be changed after importing `l293d`.
+
 #### Test Mode:
 
-Test mode (`test_mode`) is a paramter of the l293d config. By default it's off (False) although if there is a problem importing `RPi.GPIO` when `l293d.driver` is imported, test mode is enabled. You'll see something like the image below, if you have [verbosity](#verbosity) enabled.
+Test mode (`test_mode`) is a paramter of the l293d config. By default it's off (False) although if there is a problem importing `RPi.GPIO` when `l293d.driver` is imported, test mode is enabled. You'll see something like the image below.
 
 ![l293d-import-test-mode](http://i.imgur.com/6aZnUiv.png?1)
 
+_To change the value of `test_mode`, use `l293d.Config.set_test_mode(value)`, where value is True or False._
+
 #### Verbosity
 
-Verbosity is another True/False config value. l293d only prints textual output when `verbose` is True; which it is, by default.
+Verbosity (`verbose`) is another True/False config value. l293d only prints textual output when `verbose` is True; which it is, by default.
 
-The only thing that you should see as output from l293d when `verbose` is `False` is when an exception is raised.
+The only thing that you should see as output from l293d when `verbose` is `False`, is when an exception is raised.
+
+_To change the value of `verbose`, use `l293d.Config.set_verbose(value)`, where value is True or False._
+
 
 #### Pin Numbering
 
 Pin numbering (`pin_numbering`) is either BOARD or BCM. These are different ways of numbering the Raspberry Pi's pins. BOARD numbering refers to the physical location of the pins, whereas BCM refers to the Broadcom pin number. A good pinout diagram labelling the pin & BCM numbers can be found at [pinout.xyz](https://pinout.xyz/).
 
+_To change the value of `pin_numbering`, use `l293d.Config.set_pin_numbering(value)`, where value is either 'BOARD' or 'BCM'._
 
-## Sources
-
-- The l293d library is based on [this tutorial](https://business.tutsplus.com/tutorials/controlling-dc-motors-using-python-with-a-raspberry-pi--cms-20051) - The circuit diagrams in the README are from here.
-- Some helpful information about the driver chip can be found [here](http://www.rakeshmondal.info/L293D-Motor-Driver).
-- You can buy L293D driver chips cheaply online - I bought a [pack of 5 on Amazon](https://www.amazon.co.uk/dp/B008KYMVVY)
+This value should only be changed before any motors have been defined. If you try to call `l293d.Config.set_pin_numbering` after defining a motor, an exception (`ValueError`) is raised.
 
 
 ## Support
@@ -205,6 +209,13 @@ Feel free to contact me if you have any questions about use or development of `l
 If you'd like to support my open-source development while I'm a poor university student, feel free to buy me a coffee! :smile:
 
 [![buy me a coffee](http://i.imgur.com/kM1JXAl.jpg)](https://ko-fi.com/jamesv)
+
+
+## Sources
+
+- The l293d library is based on [this tutorial](https://business.tutsplus.com/tutorials/controlling-dc-motors-using-python-with-a-raspberry-pi--cms-20051) - The circuit diagrams in the README are from here.
+- Some helpful information about the driver chip can be found [here](http://www.rakeshmondal.info/L293D-Motor-Driver).
+- You can buy L293D driver chips cheaply online - I bought a [pack of 5 on Amazon](https://www.amazon.co.uk/dp/B008KYMVVY)
 
 
 ## License

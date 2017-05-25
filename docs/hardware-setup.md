@@ -10,7 +10,7 @@ You will need:
 
 The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazon](http://www.amazon.co.uk/dp/B008KYMVVY). Unless you intend to use more than two motors, only one driver chip is required; each L293D can drive up to two motors.
 
-1. ### Powering the L293D chip
+1. **Powering the L293D chip**
 
    Power and ground setup - the chip should bridge the middle of the breadboard:
    
@@ -25,7 +25,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 
    ![power pins image](http://i.imgur.com/awtfujg.png?1)
    
-2. ### Data wires
+2. **Data wires**
 
    The GPIO pins used in this example can be substitued for other valid pins, as long as continuity is maintained when [setting up a Python script](#python-scripts).
    
@@ -39,7 +39,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
 
    ![data pins image](http://i.imgur.com/h5OQFZT.png?1)
 
-3. ### Adding a motor
+3. **Adding a motor**
 
    - Motor wire 1 → L293D pin 3
    - Motor wire 2 → L293D pin 6
@@ -50,7 +50,7 @@ The L293D driver chips are very cheap to buy: I bought a bag of five [from Amazo
    
    _Note: It doesn't matter which motor wire is connected to 3 or 6, although this will affect the direction. When you've set up a [Python script](#python-scripts), if `clockwise()` makes the motor spin anti-clockwise, the two motor wires should be swapped._
 
-4. ### Adding another motor (optional)
+4. **Adding another motor (optional)**
 
    This is similar to how the first motor was connected, but the other side of the chip is used.
    

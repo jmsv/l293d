@@ -1,10 +1,10 @@
 # Python Scripts
 
-1. ### Import the module
+1. **Import the module**
    
    ```import l293d```
 
-2. ### Define motors
+2. **Define motors**
    
    In this example, the GPIO pin numbers will be the same as listed in [Hardware Setup](#hardware-setup).
    
@@ -16,7 +16,7 @@
    
    The numbers correspond to which GPIO pins are connected to L293D pins 1, 2 and 7 respectively: the pins we set up in [Hardware Setup](#hardware-setup).
 
-3. ### Control motors
+3. **Control motors**
    
    The statements to make the motor(s) spin are as follows:
    
@@ -26,7 +26,7 @@
    
    If, `clockwise()` and `anticlockwise()` spin the motor the wrong way, swap the two motor connections to the L293D chip, as explained in [Hardware Setup: Adding a motor](#adding-a-motor).
 
-4. ### Cleanup
+4. **Cleanup**
    
    I recommend that at the end of your script, you include the line: `l293d.cleanup()`, to cleanup the GPIO pins being used by the l293d library. This avoids damage to the GPIO pins; see [here](http://raspi.tv/2013/rpi-gpio-basics-3-how-to-exit-gpio-programs-cleanly-avoid-warnings-and-protect-your-pi).
 
