@@ -79,7 +79,7 @@ class L293DTestCase(unittest.TestCase):
             d.Config.set_pin_numbering('BoaRD')
         except ValueError as e:
             error = str(e)
-        self.assertEquals(
+        self.assertEqual(
             error, 'Pin numbering format cannot be changed '
                    'if motors already exist. Set this at '
                    'the start of your script.')

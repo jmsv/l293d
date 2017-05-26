@@ -1,3 +1,5 @@
+#Contributing
+
 To contribute, any pull requests are happily accepted, but any large changes should be suggested in an issue first.
 
 Code should work with both Python 2 & 3, and be [PEP8](https://www.python.org/dev/peps/pep-0008/)-compliant.

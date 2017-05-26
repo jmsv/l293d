@@ -8,3 +8,7 @@
 
 If you have any ideas, suggestions or problems, please
 [open an issue](https://github.com/jamesevickery/l293d/issues/new).
+
+This documentation stays up to date with the master branch of the [l293d repo](https://github.com/jamesevickery/l293d). For older documentation, check older README files.
+
+l293d is installable via PyPI, using `pip install l293d`. However, this isn't always the very latest version. For the latest, clone the GitHub repo and run `python setup.py install`.

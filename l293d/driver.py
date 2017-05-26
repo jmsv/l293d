@@ -5,7 +5,7 @@ from __future__ import print_function
 from time import sleep
 from threading import Thread
 
-version_num = '0.2.3'
+__version__ = '0.2.4'
 
 
 class Config(object):
@@ -59,7 +59,7 @@ class Config(object):
 
 # Print version
 if Config.get_verbose():
-    print('L293D driver version ' + version_num)
+    print('L293D driver version ' + __version__)
 
 # Import GPIO
 try:
