@@ -12,5 +12,5 @@ setup(
     license='MIT',
     keywords=['raspberry', 'pi', 'gpio', 'l293d', 'chip', 'motor', 'driver'],
     url='https://github.com/jamesevickery/l293d',
-    download_url='https://github.com/jamesevickery/l293d/tarball/master'
+    download_url='https://github.com/jamesevickery/l293d/archive/v0.2.4.tar.gz'
 )
