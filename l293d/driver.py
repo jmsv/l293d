@@ -5,7 +5,7 @@ from __future__ import print_function
 from time import sleep
 from threading import Thread
 
-__version__ = '0.2.6'
+__version__ = '0.2.7'
 
 
 class Config(object):
@@ -125,7 +125,6 @@ class DC(object):
         Set GPIO.OUT for each pin in use
         """
         for pin in self.motor_pins:
-            print(pin)
             if not Config.get_test_mode():
                 GPIO.setup(pin, GPIO.OUT)
 
