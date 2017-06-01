@@ -4,7 +4,7 @@ from distutils.core import setup
 setup(
     name='l293d',
     packages=['l293d'],
-    version='0.2.4',
+    version='0.2.5',
     author='James Vickery',
     author_email='jamesevickery.dev@gmail.com',
     description=('A Python module to drive motors using '

@@ -5,7 +5,7 @@ from __future__ import print_function
 from time import sleep
 from threading import Thread
 
-__version__ = '0.2.4'
+__version__ = '0.2.5'
 
 
 class Config(object):
@@ -102,13 +102,9 @@ class DC(object):
     motor_pins[2] is pinC is L293D pin7 or pin15 : Clockwise positive
     """
 
-    # List of pins in use by motor object
-    motor_pins = [0 for x in range(3)]
-
-    exists = True  # Used by 'remove' method
-
     def __init__(self, pin_a=0, pin_b=0, pin_c=0):
         # Assign parameters to list
+        self.motor_pins = [0 for x in range(3)]
         self.motor_pins[0] = pin_a
         self.motor_pins[1] = pin_b
         self.motor_pins[2] = pin_c
@@ -122,14 +118,14 @@ class DC(object):
         for pin in self.motor_pins:
             pins_in_use.append(pin)
         # Set up GPIO mode for pins
-        self.gpio_setup(self.motor_pins)
+        self.gpio_setup()
 
-    @staticmethod
-    def gpio_setup(pins):
+    def gpio_setup(self):
         """
         Set GPIO.OUT for each pin in use
         """
-        for pin in pins:
+        for pin in self.motor_pins:
+            print(pin)
             if not Config.get_test_mode():
                 GPIO.setup(pin, GPIO.OUT)
 
