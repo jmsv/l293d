@@ -5,7 +5,7 @@ from __future__ import print_function
 from time import sleep
 from threading import Thread
 
-__version__ = '0.2.5'
+__version__ = '0.2.6'
 
 
 class Config(object):
