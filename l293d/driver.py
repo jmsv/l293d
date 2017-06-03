@@ -158,7 +158,7 @@ class DC(object):
         """
         return '[{}, {} and {}]'.format(*self.motor_pins)
 
-    def spin_clockwise(self, duration=None, wait=True):
+    def clockwise(self, duration=None, wait=True, speed=100):
         """
         Uses drive_motor to spin motor clockwise
         """
@@ -168,7 +168,7 @@ class DC(object):
                 self.pin_numbering, self.pins_string_list()))
         self.drive_motor(direction=1, duration=duration, wait=wait)
 
-    def spin_anticlockwise(self, duration=None, wait=True):
+    def anticlockwise(self, duration=None, wait=True, speed=100):
         """
         Uses drive_motor to spin motor anticlockwise
         """
@@ -177,20 +177,6 @@ class DC(object):
             print('spinning motor at {0} pins {1} anticlockwise.'.format(
                 self.pin_numbering, self.pins_string_list()))
         self.drive_motor(direction=-1, duration=duration, wait=wait)
-
-    def clockwise(self, duration=None, wait=True):
-        """
-        Calls spin_clockwise
-        """
-        self.check()
-        self.spin_clockwise(duration, wait)
-
-    def anticlockwise(self, duration=None, wait=True):
-        """
-        Calls spin_anticlockwise
-        """
-        self.check()
-        self.spin_anticlockwise(duration, wait)
 
     def stop(self, after=0):
         """
