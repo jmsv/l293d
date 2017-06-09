@@ -106,6 +106,8 @@ class DC(object):
 
         self.pin_numbering = Config.get_pin_numbering()
 
+        self.reversed = False
+
         # Check pins are valid
         if pins_are_valid(self.motor_pins):
             self.exists = True
@@ -128,6 +130,8 @@ class DC(object):
         Method called by other functions to drive L293D via GPIO
         """
         self.check()
+        if self.reversed:
+            direction *= -1
         if not Config.get_test_mode():
             if direction == 0:  # Then stop motor
                 GPIO.output(self.motor_pins[0], GPIO.LOW)
@@ -159,8 +163,11 @@ class DC(object):
         """
         self.check()
         if Config.get_verbose():
-            print('spinning motor at {0} pins {1} clockwise.'.format(
-                self.pin_numbering, self.pins_string_list()))
+            reversed_string = ''
+            if self.reversed:
+                reversed_string = 'reversed '
+            print('spinning {0}motor at {1} pins {2} clockwise.'.format(
+                reversed_string, self.pin_numbering, self.pins_string_list()))
         self.drive_motor(direction=1, duration=duration, wait=wait)
 
     def anticlockwise(self, duration=None, wait=True, speed=100):
@@ -169,8 +176,11 @@ class DC(object):
         """
         self.check()
         if Config.get_verbose():
-            print('spinning motor at {0} pins {1} anticlockwise.'.format(
-                self.pin_numbering, self.pins_string_list()))
+            reversed_string = ''
+            if self.reversed:
+                reversed_string = 'reversed '
+            print('spinning {0}motor at {1} pins {2} anticlockwise.'.format(
+                reversed_string, self.pin_numbering, self.pins_string_list()))
         self.drive_motor(direction=-1, duration=duration, wait=wait)
 
     def stop(self, after=0):
@@ -182,8 +192,11 @@ class DC(object):
             sleep(after)
         # Verbose output
         if Config.get_verbose():
-            print('stopping motor at {0} pins {1}.'.format(
-                self.pin_numbering, self.pins_string_list()))
+            reversed_string = ''
+            if self.reversed:
+                reversed_string = 'reversed '
+            print('stopping {0}motor at {1} pins {2}.'.format(
+                reversed_string, self.pin_numbering, self.pins_string_list()))
         # Call drive_motor to stop motor after sleep
         if not Config.get_test_mode():
             self.drive_motor(direction=0, duration=after, wait=True)
