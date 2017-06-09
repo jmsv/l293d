@@ -38,6 +38,10 @@ Python 3:
 
 Install RPi.GPIO (Pi only):
 
+    $ sudo pip install RPi.GPIO
+
+Also installable via `apt-get`, although `pip` (as above) is recommended:
+
     $ sudo apt-get install RPi.GPIO
 
 Installing `RPi.GPIO` is required to drive motors on the Raspberry Pi, although in other environments, [test mode](#test-mode) is automatically enabled if `RPi.GPIO` isn't found.

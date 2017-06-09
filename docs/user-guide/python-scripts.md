@@ -12,9 +12,8 @@ In this example, the GPIO pin numbers will be the same as listed in [Hardware Se
 
     motor1 = l293d.DC(22, 18, 16)
 
-*Note: `.DC` should only be used from version 0.2.2 onwards, `.Motor` should only be used for version 0.2.0 onwards and older versions: 0.1.7 or lower, use `.motor`.*
-
-'motor1' is what we're calling the motor. You can call it whatever you want, for example `wheel_motor`, `london_eye` or `evil_avocado`.
+In this case, 'motor1' is what we're calling the DC motor object. You can call it whatever you want,
+for example `wheel_motor`, `london_eye` or `spinny_thing`.
 
 The numbers correspond to which GPIO pins are connected to L293D pins 1, 2 and 7 respectively: the pins we set up in [Hardware Setup](hardware-setup.md).
 
@@ -27,7 +26,11 @@ The statements to make the motor(s) spin are as follows:
 - `motor1.anticlockwise()`
 - `motor1.stop()`
 
-If, `clockwise()` and `anticlockwise()` spin the motor the wrong way, swap the two motor connections to the L293D chip, as explained in [Hardware Setup: Adding a motor](hardware-setup.md#adding-a-motor).
+If, `clockwise()` and `anticlockwise()` spin the motor the wrong way, swap the two motor connections to
+the L293D chip, as explained in [Hardware Setup: Adding a motor](hardware-setup.md#adding-a-motor).
+
+I strongly recommend looking at the [Clockwise & Anticlockwise](../methods/clockwise-anticlockwise.md) docs -
+these methods are more powerful than demonstrated above.
 
 
 ### 4. Cleanup

@@ -70,12 +70,7 @@ except ImportError:
     Config.set_test_mode(True)
     print('Test mode has been enabled. Please view README for more info.')
 
-# Set GPIO warnings based on verbose value
-if not Config.get_test_mode():
-    if Config.get_verbose():
-        GPIO.setwarnings(True)
-    else:
-        GPIO.setwarnings(False)
+GPIO.setwarnings(False)
 
 # Set GPIO mode
 if not Config.get_test_mode():
