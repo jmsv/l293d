@@ -12,7 +12,7 @@ pages:
     - Hardware Setup: user-guide/hardware-setup.md
     - Python Scripts: user-guide/python-scripts.md
     - Configuration: user-guide/configuration.md
-  Methods:
+- Methods:
     - Clockwise and Anticlockwise: methods/clockwise-anticlockwise.md
 - About:
     - Support: about/support.md
