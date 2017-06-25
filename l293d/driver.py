@@ -8,6 +8,18 @@ from threading import Thread
 __version__ = '0.2.7'
 
 
+def v_print(string):
+    """
+    Print if verbose
+    :param string: Text to print if verbose
+    :return: True if printed, otherwise False
+    """
+    if Config.get_verbose():
+        print(str(string))
+        return True
+    return False
+
+
 class Config(object):
     __verbose = True
     __test_mode = False
@@ -58,8 +70,7 @@ class Config(object):
 
 
 # Print version
-if Config.get_verbose():
-    print('L293D driver version ' + __version__)
+v_print('L293D driver version ' + __version__)
 
 # Import GPIO
 try:
@@ -76,12 +87,10 @@ if not Config.get_test_mode():
 # Set GPIO mode
 if not Config.get_test_mode():
     if Config.get_pin_numbering() == 'BOARD':
-        if Config.get_verbose():
-            print('Setting GPIO mode: BOARD')
+        v_print('Setting GPIO mode: BOARD')
         GPIO.setmode(GPIO.BOARD)
     elif Config.get_pin_numbering() == 'BCM':
-        if Config.get_verbose():
-            print('Setting GPIO mode: BCM')
+        v_print('Setting GPIO mode: BCM')
         GPIO.setmode(GPIO.BCM)
     else:
         print("pin_numbering must be either 'BOARD' or 'BCM'.")
@@ -167,7 +176,7 @@ class DC(object):
             reversed_string = ''
             if self.reversed:
                 reversed_string = 'reversed '
-            print('spinning {0}motor at {1} pins {2} clockwise.'.format(
+            v_print('spinning {0}motor at {1} pins {2} clockwise.'.format(
                 reversed_string, self.pin_numbering, self.pins_string_list()))
         self.drive_motor(direction=1, duration=duration, wait=wait)
 
@@ -180,7 +189,7 @@ class DC(object):
             reversed_string = ''
             if self.reversed:
                 reversed_string = 'reversed '
-            print('spinning {0}motor at {1} pins {2} anticlockwise.'.format(
+            v_print('spinning {0}motor at {1} pins {2} anticlockwise.'.format(
                 reversed_string, self.pin_numbering, self.pins_string_list()))
         self.drive_motor(direction=-1, duration=duration, wait=wait)
 
@@ -196,7 +205,7 @@ class DC(object):
             reversed_string = ''
             if self.reversed:
                 reversed_string = 'reversed '
-            print('stopping {0}motor at {1} pins {2}.'.format(
+            v_print('stopping {0}motor at {1} pins {2}.'.format(
                 reversed_string, self.pin_numbering, self.pins_string_list()))
         # Call drive_motor to stop motor after sleep
         if not Config.get_test_mode():
@@ -213,8 +222,7 @@ class DC(object):
                     pins_in_use.remove(m_pin)
             self.exists = False
         else:
-            if Config.get_verbose():
-                print('Motor has already been removed')
+            v_print('Motor has already been removed')
 
     def check(self):
         """
@@ -275,12 +283,9 @@ def cleanup():
     if not Config.get_test_mode():
         try:
             GPIO.cleanup()
-            if Config.get_verbose():
-                print('GPIO cleanup successful.')
+            v_print('GPIO cleanup successful.')
         except:
-            if Config.get_verbose():
-                print('GPIO cleanup failed.')
+            v_print('GPIO cleanup failed.')
     else:
         # Skip GPIO cleanup if GPIO calls are not being made (test_mode)
-        if Config.get_verbose():
-            print('Cleanup not needed when test_mode is enabled.')
+        v_print('Cleanup not needed when test_mode is enabled.')
