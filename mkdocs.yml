@@ -1,5 +1,6 @@
 site_name: l293d
-site_url: https://jamesevickery.github.io/l293d/
+site_url: http://readthedocs.org/projects/l293d/
+repo_url: https://jamesevickery.github.io/l293d/
 site_description: Python module to drive DC motors from a Raspberry Pi using the L293D chip
 site_author: James Vickery
 
