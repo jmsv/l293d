@@ -167,49 +167,40 @@ class DC(object):
         """
         return '[{}, {} and {}]'.format(*self.motor_pins)
 
-    def clockwise(self, duration=None, wait=True, speed=100):
+    def __move_motor(self, direction, duration, wait, action):
         """
-        Uses drive_motor to spin motor clockwise
+        Uses drive_motor to spin the motor in `direction`
         """
         self.check()
         if Config.get_verbose():
-            reversed_string = ''
-            if self.reversed:
-                reversed_string = 'reversed '
-            v_print('spinning {0}motor at {1} pins {2} clockwise.'.format(
-                reversed_string, self.pin_numbering, self.pins_string_list()))
-        self.drive_motor(direction=1, duration=duration, wait=wait)
+            v_print('{action} {reversed}motor at '
+                    '{pin_nums} pins {pin_str}'.format(
+                        action=action,
+                        reversed='reversed' if self.reversed else '',
+                        pin_nums=self.pin_numbering,
+                        pin_str=self.pins_string_list))
+
+        self.drive_motor(direction=direction, duration=duration, wait=wait)
+
+    def clockwise(self, duration=None, wait=True, speed=100):
+        """
+        Spin the motor clockwise
+        """
+        self.__move_motor(1, duration, wait, 'spinning clockwise')
 
     def anticlockwise(self, duration=None, wait=True, speed=100):
         """
-        Uses drive_motor to spin motor anticlockwise
+        Spin the motor anticlockwise
         """
-        self.check()
-        if Config.get_verbose():
-            reversed_string = ''
-            if self.reversed:
-                reversed_string = 'reversed '
-            v_print('spinning {0}motor at {1} pins {2} anticlockwise.'.format(
-                reversed_string, self.pin_numbering, self.pins_string_list()))
-        self.drive_motor(direction=-1, duration=duration, wait=wait)
+        self.__move_motor(-1, duration, wait, 'spinning anticlockwise')
 
     def stop(self, after=0):
         """
-        If 'after' is specified, sleep for amount of time
+        Stop the motor. If 'after' is specified, sleep for amount of time
         """
-        self.check()
         if after > 0:
             sleep(after)
-        # Verbose output
-        if Config.get_verbose():
-            reversed_string = ''
-            if self.reversed:
-                reversed_string = 'reversed '
-            v_print('stopping {0}motor at {1} pins {2}.'.format(
-                reversed_string, self.pin_numbering, self.pins_string_list()))
-        # Call drive_motor to stop motor after sleep
-        if not Config.get_test_mode():
-            self.drive_motor(direction=0, duration=after, wait=True)
+        self.__move_motor(0, after, True, 'stopping')
 
     def remove(self):
         """
