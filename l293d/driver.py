@@ -190,7 +190,7 @@ class DC(object):
 
     def anticlockwise(self, duration=None, wait=True, speed=100):
         """
-        Spin the motor anticlockwise 
+        Spin the motor anticlockwise
         """
         self.__move_motor(-1, duration, wait, 'spinning anticlockwise')
 
