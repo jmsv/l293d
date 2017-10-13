@@ -15,7 +15,7 @@ def v_print(string):
     :return: True if printed, otherwise False
     """
     if Config.get_verbose():
-        print(str(string))
+        print("[l293d]: {0}".format(str(string)))
         return True
     return False
 
