@@ -86,7 +86,6 @@ class L293DTestCase(unittest.TestCase):
         m1.remove()
         reload(d.driver)
 
-
     def test_getting_config(self):
         """
         Test that Config supports both get_ and properties
@@ -94,7 +93,6 @@ class L293DTestCase(unittest.TestCase):
         import l293d as d
 
         self.assertEqual(d.Config.pin_numbering, d.Config.get_pin_numbering())
-
 
     def test_setting_config(self):
         """
@@ -109,8 +107,6 @@ class L293DTestCase(unittest.TestCase):
 
         d.Config.verbose = False
         self.assertEqual(d.Config.verbose, d.Config.get_verbose())
-
-
 
 
 if __name__ == '__main__':
