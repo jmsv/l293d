@@ -68,15 +68,15 @@ class L293DTestCase(unittest.TestCase):
         reload(d.driver)
 
     def test_pin_numbering_lock(self):
-        """"
+        """
         Test that pin_numbering can't be changed after a motor's definition
         """
         import l293d as d
-        d.Config.set_pin_numbering('BcM')
+        d.Config.pin_numbering = 'BcM'
         m1 = d.DC(4, 5, 6)
         error = 'No error'
         try:
-            d.Config.set_pin_numbering('BoaRD')
+            d.Config.pin_numbering = 'BoaRD'
         except ValueError as e:
             error = str(e)
         self.assertEqual(
@@ -85,6 +85,28 @@ class L293DTestCase(unittest.TestCase):
                    'the start of your script.')
         m1.remove()
         reload(d.driver)
+
+    def test_getting_config(self):
+        """
+        Test that Config supports both get_ and properties
+        """
+        import l293d as d
+
+        self.assertEqual(d.Config.pin_numbering, d.Config.get_pin_numbering())
+
+    def test_setting_config(self):
+        """
+        Test that Config supports both set_ and properties
+        """
+        import l293d as d
+
+        d.Config.set_verbose(False)
+        self.assertEqual(d.Config.verbose, d.Config.get_verbose())
+
+        reload(d.driver)
+
+        d.Config.verbose = False
+        self.assertEqual(d.Config.verbose, d.Config.get_verbose())
 
 
 if __name__ == '__main__':

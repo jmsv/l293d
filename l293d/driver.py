@@ -14,41 +14,93 @@ def v_print(string):
     :param string: Text to print if verbose
     :return: True if printed, otherwise False
     """
-    if Config.get_verbose():
+    if Config.verbose:
         print(str(string))
         return True
     return False
 
 
+class ConfigMeta(type):
+    def __call__(cls):
+        """
+        Stops the creation of Config objects.
+        """
+        raise EnvironmentError(
+            "Cannot create an intance of '{0}', use {0}.attr instead.".format(
+                cls.__name__))
+
+    def __getattr__(cls, attr):
+        """
+        Try and call get_`attr` on the cls.
+        """
+        try:
+            return cls.__dict__["get_" + attr].__func__(cls)
+        except KeyError:
+            raise AttributeError(
+                "object '{}' has no attribute '{}'".format(
+                    cls.__name__, attr))
+
+    def __setattr__(cls, attr, value):
+        """
+        Try and call set_`attr` on the cls.
+        """
+        if cls.__name__ not in attr:
+            # First try calling the set_ method. This will allow the set_
+            # method to perform it's checks, then recursively call this method.
+            try:
+                cls.__dict__["set_" + attr].__func__(cls, value)
+            except KeyError:
+                raise AttributeError(
+                    "object '{}' has no attribute '{}'".format(
+                        cls.__name__, attr))
+        else:
+            # Now that the set_ method has done it's checks, we can use super()
+            # to actually set the value.
+            super(ConfigMeta, cls).__setattr__(attr, value)
+
+
+def with_metaclass(mcls):
+    """
+    Allows compatibility for metaclass in python2 and python3
+    """
+    def decorator(cls):
+        body = vars(cls).copy()
+        body.pop("__dict__", None)
+        body.pop("__weakref__", None)
+        return mcls(cls.__name__, cls.__bases__, body)
+    return decorator
+
+
+@with_metaclass(ConfigMeta)
 class Config(object):
     __verbose = True
     __test_mode = False
     __pin_numbering = 'BOARD'
 
-    @staticmethod
-    def set_verbose(value):
+    @classmethod
+    def set_verbose(cls, value):
         if type(value) == bool:
             Config.__verbose = value
         else:
             raise TypeError('verbose must be either True or False')
 
-    @staticmethod
-    def get_verbose():
+    @classmethod
+    def get_verbose(cls):
         return Config.__verbose
 
-    @staticmethod
-    def set_test_mode(value):
+    @classmethod
+    def set_test_mode(cls, value):
         if type(value) == bool:
             Config.__test_mode = value
         else:
             raise TypeError('test_mode must be either True or False')
 
-    @staticmethod
-    def get_test_mode():
+    @classmethod
+    def get_test_mode(cls):
         return Config.__test_mode
 
-    @staticmethod
-    def set_pin_numbering(value):
+    @classmethod
+    def set_pin_numbering(cls, value):
         if type(value) != str:
             raise TypeError('pin_numbering must be a string:'
                             '\'BOARD\' or \'BCM\'')
@@ -64,8 +116,8 @@ class Config(object):
         print("Pin numbering format set: " + value)
         return value
 
-    @staticmethod
-    def get_pin_numbering():
+    @classmethod
+    def get_pin_numbering(cls):
         return Config.__pin_numbering
 
 
@@ -78,18 +130,18 @@ try:
 except ImportError:
     GPIO = None
     print("Can't import RPi.GPIO. Please (re)install.")
-    Config.set_test_mode(True)
+    Config.test_mode = True
     print('Test mode has been enabled. Please view README for more info.')
 
-if not Config.get_test_mode():
+if not Config.test_mode:
     GPIO.setwarnings(False)
 
 # Set GPIO mode
-if not Config.get_test_mode():
-    if Config.get_pin_numbering() == 'BOARD':
+if not Config.test_mode:
+    if Config.pin_numbering == 'BOARD':
         v_print('Setting GPIO mode: BOARD')
         GPIO.setmode(GPIO.BOARD)
-    elif Config.get_pin_numbering() == 'BCM':
+    elif Config.pin_numbering == 'BCM':
         v_print('Setting GPIO mode: BCM')
         GPIO.setmode(GPIO.BCM)
     else:
@@ -114,7 +166,7 @@ class DC(object):
         self.motor_pins[1] = pin_b
         self.motor_pins[2] = pin_c
 
-        self.pin_numbering = Config.get_pin_numbering()
+        self.pin_numbering = Config.pin_numbering
 
         self.reversed = False
 
@@ -132,7 +184,7 @@ class DC(object):
         Set GPIO.OUT for each pin in use
         """
         for pin in self.motor_pins:
-            if not Config.get_test_mode():
+            if not Config.test_mode:
                 GPIO.setup(pin, GPIO.OUT)
 
     def drive_motor(self, direction=1, duration=None, wait=True):
@@ -142,7 +194,7 @@ class DC(object):
         self.check()
         if self.reversed:
             direction *= -1
-        if not Config.get_test_mode():
+        if not Config.test_mode:
             if direction == 0:  # Then stop motor
                 GPIO.output(self.motor_pins[0], GPIO.LOW)
             else:  # Spin motor
@@ -172,7 +224,7 @@ class DC(object):
         Uses drive_motor to spin the motor in `direction`
         """
         self.check()
-        if Config.get_verbose():
+        if Config.verbose:
             v_print('{action} {reversed}motor at '
                     '{pin_nums} pins {pin_str}'.format(
                         action=action,
@@ -244,11 +296,11 @@ def pins_are_valid(pins, force_selection=False):
     """
     # Pin numbering, used below, should be
     # a parameter of this function (future)
-    if Config.get_pin_numbering() == 'BOARD':  # Set valid pins for BOARD
+    if Config.pin_numbering == 'BOARD':  # Set valid pins for BOARD
         valid_pins = [
             7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37
         ]
-    elif Config.get_pin_numbering() == 'BCM':  # Set valid pins for BCM
+    elif Config.pin_numbering == 'BCM':  # Set valid pins for BCM
         valid_pins = [
             4, 5, 6, 12, 13, 16, 17, 18, 22, 23, 24, 25, 26, 27
         ]
@@ -271,7 +323,7 @@ def cleanup():
     """
     Call GPIO cleanup method
     """
-    if not Config.get_test_mode():
+    if not Config.test_mode:
         try:
             GPIO.cleanup()
             v_print('GPIO cleanup successful.')
