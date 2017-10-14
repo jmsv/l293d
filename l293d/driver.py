@@ -34,7 +34,7 @@ class ConfigMeta(type):
         Try and call get_`attr` on the cls.
         """
         try:
-            return cls.__dict__["get_" + attr]()
+            return cls.__dict__["get_" + attr].__func__(cls)
         except KeyError:
             raise AttributeError(
                 "object '{}' has no attribute '{}'".format(
@@ -48,7 +48,7 @@ class ConfigMeta(type):
             # First try calling the set_ method. This will allow the set_
             # method to perform it's checks, then recursively call this method.
             try:
-                cls.__dict__["set_" + attr](value)
+                cls.__dict__["set_" + attr].__func__(cls, value)
             except KeyError:
                 raise AttributeError(
                     "object '{}' has no attribute '{}'".format(
@@ -77,25 +77,30 @@ class Config(object):
     __test_mode = False
     __pin_numbering = 'BOARD'
 
-    def set_verbose(value):
+    @classmethod
+    def set_verbose(cls, value):
         if type(value) == bool:
             Config.__verbose = value
         else:
             raise TypeError('verbose must be either True or False')
 
-    def get_verbose():
+    @classmethod
+    def get_verbose(cls):
         return Config.__verbose
 
-    def set_test_mode(value):
+    @classmethod
+    def set_test_mode(cls, value):
         if type(value) == bool:
             Config.__test_mode = value
         else:
             raise TypeError('test_mode must be either True or False')
 
-    def get_test_mode():
+    @classmethod
+    def get_test_mode(cls):
         return Config.__test_mode
 
-    def set_pin_numbering(value):
+    @classmethod
+    def set_pin_numbering(cls, value):
         if type(value) != str:
             raise TypeError('pin_numbering must be a string:'
                             '\'BOARD\' or \'BCM\'')
@@ -111,7 +116,8 @@ class Config(object):
         print("Pin numbering format set: " + value)
         return value
 
-    def get_pin_numbering():
+    @classmethod
+    def get_pin_numbering(cls):
         return Config.__pin_numbering
 
 
