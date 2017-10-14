@@ -14,8 +14,8 @@ def v_print(string):
     :param string: Text to print if verbose
     :return: True if printed, otherwise False
     """
-    if Config.verbose:
-        print(str(string))
+    if Config.get_verbose():
+        print("[l293d]: {0}".format(str(string)))
         return True
     return False
 
