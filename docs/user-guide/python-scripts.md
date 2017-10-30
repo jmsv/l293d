@@ -3,14 +3,18 @@ I'm currently working on better documentation for the methods used, as some have
 
 ### 1. Import the module
 
-    import l293d
+```python
+import l293d 
+```
 
 
 ### 2. Define motors
 
 In this example, the GPIO pin numbers will be the same as listed in [Hardware Setup](hardware-setup.md).
 
-    motor1 = l293d.DC(22, 18, 16)
+```python
+motor1 = l293d.DC(22, 18, 16)
+```
 
 In this case, 'motor1' is what we're calling the DC motor object. You can call it whatever you want,
 for example `wheel_motor`, `london_eye` or `spinny_thing`.
