@@ -1,6 +1,6 @@
 configparser==3.5.0
 enum34==1.1.6
-flake8==3.4.1
+flake8==3.5.0
 l293d==0.2.7
 mccabe==0.6.1
 py==1.4.34
