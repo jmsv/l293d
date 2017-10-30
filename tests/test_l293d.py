@@ -52,7 +52,7 @@ class L293DTestCase(unittest.TestCase):
             valid = d.pins_are_valid([31, 36, 11])
             if valid:
                 self.assertFalse(True)
-        except:
+        except Exception:
             self.assertFalse(False)
         reload(d.driver)
 
