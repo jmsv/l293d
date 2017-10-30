@@ -327,7 +327,7 @@ def cleanup():
         try:
             GPIO.cleanup()
             v_print('GPIO cleanup successful.')
-        except:
+        except Exception:
             v_print('GPIO cleanup failed.')
     else:
         # Skip GPIO cleanup if GPIO calls are not being made (test_mode)
