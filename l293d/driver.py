@@ -4,6 +4,8 @@
 from __future__ import print_function
 from time import sleep
 from threading import Thread
+from l293d.config import Config
+
 
 __version__ = '0.2.7'
 
@@ -18,107 +20,6 @@ def v_print(string):
         print("[l293d]: {0}".format(str(string)))
         return True
     return False
-
-
-class ConfigMeta(type):
-    def __call__(cls):
-        """
-        Stops the creation of Config objects.
-        """
-        raise EnvironmentError(
-            "Cannot create an intance of '{0}', use {0}.attr instead.".format(
-                cls.__name__))
-
-    def __getattr__(cls, attr):
-        """
-        Try and call get_`attr` on the cls.
-        """
-        try:
-            return cls.__dict__["get_" + attr].__func__(cls)
-        except KeyError:
-            raise AttributeError(
-                "object '{}' has no attribute '{}'".format(
-                    cls.__name__, attr))
-
-    def __setattr__(cls, attr, value):
-        """
-        Try and call set_`attr` on the cls.
-        """
-        if cls.__name__ not in attr:
-            # First try calling the set_ method. This will allow the set_
-            # method to perform it's checks, then recursively call this method.
-            try:
-                cls.__dict__["set_" + attr].__func__(cls, value)
-            except KeyError:
-                raise AttributeError(
-                    "object '{}' has no attribute '{}'".format(
-                        cls.__name__, attr))
-        else:
-            # Now that the set_ method has done it's checks, we can use super()
-            # to actually set the value.
-            super(ConfigMeta, cls).__setattr__(attr, value)
-
-
-def with_metaclass(mcls):
-    """
-    Allows compatibility for metaclass in python2 and python3
-    """
-    def decorator(cls):
-        body = vars(cls).copy()
-        body.pop("__dict__", None)
-        body.pop("__weakref__", None)
-        return mcls(cls.__name__, cls.__bases__, body)
-    return decorator
-
-
-@with_metaclass(ConfigMeta)
-class Config(object):
-    __verbose = True
-    __test_mode = False
-    __pin_numbering = 'BOARD'
-
-    @classmethod
-    def set_verbose(cls, value):
-        if type(value) == bool:
-            Config.__verbose = value
-        else:
-            raise TypeError('verbose must be either True or False')
-
-    @classmethod
-    def get_verbose(cls):
-        return Config.__verbose
-
-    @classmethod
-    def set_test_mode(cls, value):
-        if type(value) == bool:
-            Config.__test_mode = value
-        else:
-            raise TypeError('test_mode must be either True or False')
-
-    @classmethod
-    def get_test_mode(cls):
-        return Config.__test_mode
-
-    @classmethod
-    def set_pin_numbering(cls, value):
-        if type(value) != str:
-            raise TypeError('pin_numbering must be a string:'
-                            '\'BOARD\' or \'BCM\'')
-        value = str(value).upper()
-        if pins_in_use:
-            raise ValueError('Pin numbering format cannot be changed '
-                             'if motors already exist. Set this at '
-                             'the start of your script.')
-        if not (value == 'BOARD' or value == 'BCM'):
-            raise ValueError(
-                'Pin numbering format must be \'BOARD\' or \'BCM\'')
-        Config.__pin_numbering = value
-        print("Pin numbering format set: " + value)
-        return value
-
-    @classmethod
-    def get_pin_numbering(cls):
-        return Config.__pin_numbering
 
 
 # Print version
@@ -138,17 +39,12 @@ if not Config.test_mode:
 
 # Set GPIO mode
 if not Config.test_mode:
-    if Config.pin_numbering == 'BOARD':
-        v_print('Setting GPIO mode: BOARD')
-        GPIO.setmode(GPIO.BOARD)
-    elif Config.pin_numbering == 'BCM':
-        v_print('Setting GPIO mode: BCM')
-        GPIO.setmode(GPIO.BCM)
-    else:
-        print("pin_numbering must be either 'BOARD' or 'BCM'.")
-        raise ValueError("pin_numbering must be either 'BOARD' or 'BCM'.")
+    pin_num = Config.pin_numbering
+    v_print('Setting GPIO mode: {}'.format(pin_num))
+    GPIO.setmode(getattr(GPIO, pin_num))
 
-pins_in_use = []  # Lists pins in use (all motors)
+
+pins_in_use = Config.pins_in_use  # Lists pins in use (all motors)
 
 
 class DC(object):
@@ -259,7 +155,6 @@ class DC(object):
         Remove motor
         """
         if self.exists:
-            global pins_in_use
             for m_pin in self.motor_pins:
                 if m_pin in pins_in_use:
                     pins_in_use.remove(m_pin)
