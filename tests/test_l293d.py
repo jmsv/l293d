@@ -84,6 +84,7 @@ class L293DTestCase(unittest.TestCase):
                    'if motors already exist. Set this at '
                    'the start of your script.')
         m1.remove()
+        d.Config.pin_numbering = 'BOARD'
         reload(d.driver)
 
     def test_getting_config(self):
