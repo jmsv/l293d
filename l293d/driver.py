@@ -96,14 +96,14 @@ class DC(object):
             if direction == 0:  # Then stop motor
                 self.pwm.stop()
             else:  # Spin motor
+                # Create a PWM object to control the 'enable pin' for the chip
                 self.pwm = GPIO.PWM(self.motor_pins[0], speed)
-                self.pwm.start(0)
                 # Set first direction GPIO level
-                GPIO.output(self.motor_pins[direction], True)
+                GPIO.output(self.motor_pins[direction], GPIO.HIGH)
                 # Set second direction GPIO level
-                GPIO.output(self.motor_pins[direction * -1], False)
-                # Turn the motor on
-                self.pwm.ChangeDutyCycle(speed)
+                GPIO.output(self.motor_pins[direction * -1], GPIO.LOW)
+                # Start PWM on the 'enable pin'
+                self.pwm.start(speed)
         # If duration has been specified, sleep then stop
         if duration is not None and direction != 0:
             stop_thread = Thread(target=self.stop, args=(duration,))
