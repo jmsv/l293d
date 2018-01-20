@@ -4,6 +4,7 @@
 from __future__ import print_function
 from time import sleep
 from threading import Thread
+from collections import namedtuple
 from l293d.config import Config
 
 
@@ -90,6 +91,13 @@ class DC(object):
         Method called by other functions to drive L293D via GPIO
         """
         self.check()
+
+        if isinstance(speed, int):
+            # If speed is an integer, change it to a tuple
+            speed = (speed, speed)
+        # Unpack speed into PWM, this works even if a PWM tuple was passed in
+        speed = PWM(*speed)
+
         if self.reversed:
             direction *= -1
         if not Config.test_mode:
@@ -97,13 +105,13 @@ class DC(object):
                 self.pwm.stop()
             else:  # Spin motor
                 # Create a PWM object to control the 'enable pin' for the chip
-                self.pwm = GPIO.PWM(self.motor_pins[0], speed)
+                self.pwm = GPIO.PWM(self.motor_pins[0], speed.freq)
                 # Set first direction GPIO level
                 GPIO.output(self.motor_pins[direction], GPIO.HIGH)
                 # Set second direction GPIO level
                 GPIO.output(self.motor_pins[direction * -1], GPIO.LOW)
                 # Start PWM on the 'enable pin'
-                self.pwm.start(speed)
+                self.pwm.start(speed.cycle)
         # If duration has been specified, sleep then stop
         if duration is not None and direction != 0:
             stop_thread = Thread(target=self.stop, args=(duration,))
@@ -175,6 +183,9 @@ class DC(object):
             raise ValueError('Motor has been removed. '
                              'If you wish to use this motor again, '
                              'you must redefine it.')
+
+
+PWM = namedtuple("PWM", ["freq", "cycle"])
 
 
 class Motor(object):
