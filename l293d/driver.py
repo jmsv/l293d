@@ -4,6 +4,7 @@
 from __future__ import print_function
 from time import sleep
 from threading import Thread
+from collections import namedtuple
 from l293d.config import Config
 
 
@@ -62,6 +63,8 @@ class DC(object):
         self.motor_pins[1] = pin_b
         self.motor_pins[2] = pin_c
 
+        self.pwm = None
+
         self.pin_numbering = Config.pin_numbering
 
         self.reversed = False
@@ -83,23 +86,32 @@ class DC(object):
             if not Config.test_mode:
                 GPIO.setup(pin, GPIO.OUT)
 
-    def drive_motor(self, direction=1, duration=None, wait=True):
+    def drive_motor(self, direction=1, duration=None, wait=True, speed=100):
         """
         Method called by other functions to drive L293D via GPIO
         """
         self.check()
+
+        if isinstance(speed, int):
+            # If speed is an integer, change it to a tuple
+            speed = (speed, speed)
+        # Unpack speed into PWM, this works even if a PWM tuple was passed in
+        speed = PWM(*speed)
+
         if self.reversed:
             direction *= -1
         if not Config.test_mode:
             if direction == 0:  # Then stop motor
-                GPIO.output(self.motor_pins[0], GPIO.LOW)
+                self.pwm.stop()
             else:  # Spin motor
+                # Create a PWM object to control the 'enable pin' for the chip
+                self.pwm = GPIO.PWM(self.motor_pins[0], speed.freq)
                 # Set first direction GPIO level
                 GPIO.output(self.motor_pins[direction], GPIO.HIGH)
                 # Set second direction GPIO level
                 GPIO.output(self.motor_pins[direction * -1], GPIO.LOW)
-                # Turn the motor on
-                GPIO.output(self.motor_pins[0], GPIO.HIGH)
+                # Start PWM on the 'enable pin'
+                self.pwm.start(speed.cycle)
         # If duration has been specified, sleep then stop
         if duration is not None and direction != 0:
             stop_thread = Thread(target=self.stop, args=(duration,))
@@ -115,7 +127,7 @@ class DC(object):
         """
         return '[{}, {} and {}]'.format(*self.motor_pins)
 
-    def __move_motor(self, direction, duration, wait, action):
+    def __move_motor(self, direction, duration, wait, action, speed):
         """
         Uses drive_motor to spin the motor in `direction`
         """
@@ -126,21 +138,22 @@ class DC(object):
                         action=action,
                         reversed='reversed' if self.reversed else '',
                         pin_nums=self.pin_numbering,
-                        pin_str=self.pins_string_list))
+                        pin_str=self.pins_string_list()))
 
-        self.drive_motor(direction=direction, duration=duration, wait=wait)
+        self.drive_motor(direction=direction, duration=duration,
+                         wait=wait, speed=speed)
 
     def clockwise(self, duration=None, wait=True, speed=100):
         """
         Spin the motor clockwise
         """
-        self.__move_motor(1, duration, wait, 'spinning clockwise')
+        self.__move_motor(1, duration, wait, 'spinning clockwise', speed)
 
     def anticlockwise(self, duration=None, wait=True, speed=100):
         """
         Spin the motor anticlockwise
         """
-        self.__move_motor(-1, duration, wait, 'spinning anticlockwise')
+        self.__move_motor(-1, duration, wait, 'spinning anticlockwise', speed)
 
     def stop(self, after=0):
         """
@@ -148,7 +161,7 @@ class DC(object):
         """
         if after > 0:
             sleep(after)
-        self.__move_motor(0, after, True, 'stopping')
+        self.__move_motor(0, after, True, 'stopping', None)
 
     def remove(self):
         """
@@ -170,6 +183,9 @@ class DC(object):
             raise ValueError('Motor has been removed. '
                              'If you wish to use this motor again, '
                              'you must redefine it.')
+
+
+PWM = namedtuple("PWM", ["freq", "cycle"])
 
 
 class Motor(object):

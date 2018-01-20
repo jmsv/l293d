@@ -19,8 +19,48 @@ spin clockwise for 3 seconds.
 - **Type:** Boolean - _`bool`_
 - **Default:** `True` - _Method doesn't return until motor has stopped_
 
-If the `duration` parameter is being used to make the motor spin for a number of seconds, 
-the `wait` parameter can be used 
+If the `duration` parameter is being used to make the motor spin for a number of seconds,
+the `wait` parameter can be used
+
+
+### `speed`
+
+- **Type:** Tuple - _`tuple`_ / _`PWM`_
+- **Default:** `100` - _Motor runs at a 100% duty cycle (full speed)_
+
+The `speed` parameter can be used to control how fast the motor spins using
+[PWM (Pulse Width Modulation)](https://en.wikipedia.org/wiki/Pulse-width_modulation).
+
+`speed` can be either a tuple or an iteger. When using a tuple, order matters
+and it should be `(frequency, duty_cycle)`.
+
+There is also the option to be explict and use the `l293d.PWM` namedtuple which
+takes the 2 keyword arguments: `l293d.PWM(freq=x, cycle=x)`.
+
+#### PWM examples
+
+```python
+import l293d
+
+motor = l293d.DC(22, 18, 16)
+
+# pre-define a pwm
+pwm = l293d.PWM(freq=30, cycle=70)
+motor.clockwise(speed=pwm)
+
+# or use it directly in the method call
+motor.clockwise(speed=l293d.PWM(freq=50, cycle=50))
+
+# keywords aren't required
+motor.clockwise(speed=l293d.PWM(50, 50))
+
+# normal tuples work too
+motor.clockwise(speed=(20, 30))
+
+# an integer can be used if you want the same frequency and duty cycle
+motor.clockwise(speed=50)
+```
+
 
 
 ## Implementation Examples
