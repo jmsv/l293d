@@ -8,7 +8,7 @@ from collections import namedtuple
 from l293d.config import Config
 
 
-__version__ = '0.2.7'
+__version__ = '0.3.0'
 
 
 def v_print(string):
