@@ -1,21 +1,13 @@
 #!/bin/bash
 
-# to be run as ./tests/local-tests.sh
+# To be run as ./tests/local-tests.sh
 
+# Abort on errors
 set -e
 
-# install
-echo "   ------------   Installing l293d for Python 2.    ------------"
-sudo python2 setup.py install
-echo "   ------------   Installing l293d for Python 3.    ------------"
-sudo python3 setup.py install
+# Flake8 code linting (config in setup.cfg)
+flake8
 
-# linting check
-flake8 . --exclude __init__.py
-echo "   ------------ flake 8 checks passed - returned 0. ------------"
-
-# run tests
+# Run tests in Python 2
 py.test tests/
-python3 -m pytest tests/
 
-echo "   ------------         All checks passed.          ------------"
