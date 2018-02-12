@@ -31,7 +31,7 @@ the `wait` parameter can be used
 The `speed` parameter can be used to control how fast the motor spins using
 [PWM (Pulse Width Modulation)](https://en.wikipedia.org/wiki/Pulse-width_modulation).
 
-`speed` can be either a tuple or an iteger. When using a tuple, order matters
+`speed` can be either a tuple or an integer. When using a tuple, order matters
 and it should be `(frequency, duty_cycle)`.
 
 There is also the option to be explict and use the `l293d.PWM` namedtuple which
@@ -71,16 +71,16 @@ motor = l293d.DC(15, 18, 11)
 ```
 
 
-1. `motor.clockwise()`
+- `motor.clockwise()`
 
    Turns `motor` on in the clockwise direction. Doesn't stop until `motor.stop()` is called
 
-2. `motor.anticlockwise(3.5)`
+- `motor.anticlockwise(3.5)`
 
    As `duration` is the first parameter of the `anticlockwise` and `clockwise` methods,
    the line above would make `motor` spin for 3.5 seconds before the method returns
 
-3. `motor.clockwise(7, wait=False)`
+- `motor.clockwise(7, wait=False)`
 
    `motor` spins for 7 seconds, but the method returns immediately.
    This means that any code following this line won't be delayed. 

@@ -12,13 +12,15 @@ Code should work with both Python 2 & 3, and be [PEP8](https://www.python.org/de
 
 ## GitHub
 
-Feel free to clone: [https://github.com/jamesevickery/l293d](https://github.com/jamesevickery/l293d)
+This project is hosted on GitHub, at [https://github.com/jamesevickery/l293d](https://github.com/jamesevickery/l293d).
 
-You may also fork if you wish to make changes
+Feel free to star/fork
 
 
 ## Contributors
 
+- [@jamesevickery](https://github.com/jamesevickery)
+- [@alxwrd](https://github.com/alxwrd)
 - [@the-zebulan](https://github.com/the-zebulan)
 - [@surajnarwade](https://github.com/surajnarwade)
 - [@vlvrd](https://github.com/vlvrd)
