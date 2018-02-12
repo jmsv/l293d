@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from setuptools import setup
-#from distutils.core import setup
 
 l293d_version = '0.3.1'
 repo = 'https://github.com/jamesevickery/l293d'
