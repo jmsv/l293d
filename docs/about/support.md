@@ -4,6 +4,3 @@ If you have any ideas that would make this library even more beautiful, please [
 
 Feel free to contact me if you have any questions about use or development of `l293d`. Either [submit an issue](https://github.com/jamesevickery/l293d/issues), email me at [dev@jamesvickery.net](mailto:dev@jamesvickery.net?Subject=L293D) or tweet/DM me [on Twitter](https://twitter.com/jamesevickery).
 
-If you'd like to support my open-source development while I'm a poor university student, feel free to buy me a coffee!
-
-[![buy me a coffee](http://i.imgur.com/kM1JXAl.jpg)](https://ko-fi.com/jamesv)

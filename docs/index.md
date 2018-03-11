@@ -6,6 +6,8 @@
 [![Build Status](https://travis-ci.org/jamesevickery/l293d.svg?branch=master)](https://travis-ci.org/jamesevickery/l293d)
 [![Documentation Status](https://readthedocs.org/projects/l293d/badge/?version=latest)](http://l293d.readthedocs.io/en/latest/?badge=latest)
 [![Requirements Status](https://requires.io/github/jamesevickery/l293d/requirements.svg?branch=master)](https://requires.io/github/jamesevickery/l293d/requirements/?branch=master)
+[![Contributors](https://img.shields.io/github/contributors/jamesevickery/l293d.svg)](https://github.com/jamesevickery/l293d/graphs/contributors)
+[![Wheel Support](https://img.shields.io/pypi/wheel/l293d.svg)](https://pypi.python.org/pypi/l293d)
 
 ---
 

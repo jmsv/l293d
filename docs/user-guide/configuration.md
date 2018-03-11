@@ -1,18 +1,20 @@
 The following config values change how the module works, and can be changed after importing `l293d`.
 
-## Test Mode:
+## Test Mode
 
-Test mode (`test_mode`) is a paramter of the l293d config. By default it's off (False) although if there is a problem importing `RPi.GPIO` when `l293d.driver` is imported, test mode is enabled. You'll see something like the image below.
+Test mode (`test_mode`) is a parameter of the l293d config. By default it's off (False) although if there is a problem importing `RPi.GPIO` when `l293d.driver` is imported, test mode is enabled.
 
-![l293d-import-test-mode](http://i.imgur.com/6aZnUiv.png?1)
+To stop this from happening, install the RPi.GPIO Python package:
+
+```bash
+pip install RPi.GPIO
+```
 
 _To change the value of `test_mode`, use `l293d.Config.test_mode = value`, where value is True or False._
 
 ## Verbosity
 
 Verbosity (`verbose`) is another True/False config value. l293d only prints textual output when `verbose` is True; which it is, by default.
-
-The only thing that you should see as output from l293d when `verbose` is `False`, is when an exception is raised.
 
 _To change the value of `verbose`, use `l293d.Config.verbose = value`, where value is True or False._
 
