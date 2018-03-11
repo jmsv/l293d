@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-from time import sleep
-from threading import Thread
+
 from collections import namedtuple
+from threading import Thread
+from time import sleep
+
 from l293d.config import Config
-
-
-__version__ = '0.3.1'
 
 
 def v_print(string):
@@ -18,22 +17,20 @@ def v_print(string):
     :return: True if printed, otherwise False
     """
     if Config.get_verbose():
-        print("[l293d]: {0}".format(str(string)))
+        print("[l293d]: %s" % str(string))
         return True
     return False
 
-
-# Print version
-v_print('L293D driver version ' + __version__)
 
 # Import GPIO
 try:
     import RPi.GPIO as GPIO
 except ImportError:
     GPIO = None
-    print("Can't import RPi.GPIO. Please (re)install.")
     Config.test_mode = True
-    print('Test mode has been enabled. Please view README for more info.')
+    v_print(
+        "Can't import RPi.GPIO; test mode has been enabled:\n"
+        "http://l293d.rtfd.io/en/latest/user-guide/configuration/#test-mode")
 
 if not Config.test_mode:
     GPIO.setwarnings(False)
@@ -43,7 +40,6 @@ if not Config.test_mode:
     pin_num = Config.pin_numbering
     v_print('Setting GPIO mode: {}'.format(pin_num))
     GPIO.setmode(getattr(GPIO, pin_num))
-
 
 pins_in_use = Config.pins_in_use  # Lists pins in use (all motors)
 
@@ -135,10 +131,10 @@ class DC(object):
         if Config.verbose:
             v_print('{action} {reversed}motor at '
                     '{pin_nums} pins {pin_str}'.format(
-                        action=action,
-                        reversed='reversed' if self.reversed else '',
-                        pin_nums=self.pin_numbering,
-                        pin_str=self.pins_string_list()))
+                action=action,
+                reversed='reversed' if self.reversed else '',
+                pin_nums=self.pin_numbering,
+                pin_str=self.pins_string_list()))
 
         self.drive_motor(direction=direction, duration=duration,
                          wait=wait, speed=speed)
@@ -221,9 +217,9 @@ def pins_are_valid(pins, force_selection=False):
         pin_int = int(pin)
         if pin_int not in valid_pins and force_selection is False:
             err_str = (
-                "GPIO pin number must be from list of valid pins: %s"
-                "\nTo use selected pins anyway, set force_selection=True "
-                "in function call." % str(valid_pins))
+                    "GPIO pin number must be from list of valid pins: %s"
+                    "\nTo use selected pins anyway, set force_selection=True "
+                    "in function call." % str(valid_pins))
             raise ValueError(err_str)
         if pin in pins_in_use:
             raise ValueError('GPIO pin {} already in use.'.format(pin))
