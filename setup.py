@@ -23,6 +23,7 @@ setup(
     description=('A Python module to drive motors using '
                  'an L293D via Raspberry Pi GPIO'),
     long_description=readme,
+    long_description_content_type='text/markdown',
     license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
