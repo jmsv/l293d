@@ -12,3 +12,9 @@ clean:
 test:
 	tests/local-tests.sh
 
+dist:
+	python3 setup.py sdist bdist_wheel
+
+upload:
+	twine upload dist/*
+
