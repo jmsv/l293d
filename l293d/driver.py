@@ -88,6 +88,8 @@ class DC(object):
         """
         self.check()
 
+        if not speed:
+            speed = 0
         if isinstance(speed, int):
             # If speed is an integer, change it to a tuple
             speed = (speed, speed)
