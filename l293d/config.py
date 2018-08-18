@@ -13,7 +13,7 @@ class Config(object):
         Try and call get_`attr` on the cls.
         """
         try:
-            return cls.__dict__["get_" + attr].__func__(cls)
+            return getattr(cls, "get_" + attr)()
         except KeyError:
             raise AttributeError(
                 "object '{}' has no attribute '{}'".format(
@@ -28,7 +28,7 @@ class Config(object):
             # First try calling the set_ method. This will allow the set_
             # method to perform it's checks, then recursively call this method.
             try:
-                cls.__dict__["set_" + attr].__func__(cls, value)
+                getattr(cls, "set_" + attr)(value)
             except KeyError:
                 raise AttributeError(
                     "object '{}' has no attribute '{}'".format(
