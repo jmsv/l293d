@@ -2,7 +2,7 @@
 from l293d.driver import v_print
 
 
-class MicroPythonGPIO(GPIOStub):
+class GPIO(object):
     __pins = {}
 
     IN = 0
