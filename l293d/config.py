@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+class Config(object):
+    __verbose = True
+    __test_mode = False
+    __pin_numbering = 'BOARD'
+    pins_in_use = []
 
-class ConfigMeta(type):
-
+    @classmethod
     def __getattr__(cls, attr):
         """
         Try and call get_`attr` on the cls.
@@ -15,6 +19,7 @@ class ConfigMeta(type):
                 "object '{}' has no attribute '{}'".format(
                     cls.__name__, attr))
 
+    @classmethod
     def __setattr__(cls, attr, value):
         """
         Try and call set_`attr` on the cls.
@@ -32,26 +37,6 @@ class ConfigMeta(type):
             # Now that the set_ method has done it's checks, we can use super()
             # to actually set the value.
             super(ConfigMeta, cls).__setattr__(attr, value)
-
-
-def with_metaclass(mcls):
-    """
-    Allows compatibility for metaclass in python2 and python3
-    """
-    def decorator(cls):
-        body = vars(cls).copy()
-        body.pop("__dict__", None)
-        body.pop("__weakref__", None)
-        return mcls(cls.__name__, cls.__bases__, body)
-    return decorator
-
-
-@with_metaclass(ConfigMeta)
-class Config(object):
-    __verbose = True
-    __test_mode = False
-    __pin_numbering = 'BOARD'
-    pins_in_use = []
 
     @classmethod
     def set_verbose(cls, value):

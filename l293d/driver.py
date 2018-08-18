@@ -8,6 +8,7 @@ from threading import Thread
 from time import sleep
 
 from l293d.config import Config
+Config = Config()
 
 
 def v_print(string):
