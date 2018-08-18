@@ -13,6 +13,7 @@ except ImportError:
     threading = False
 from time import sleep
 
+from l293d.gpio import GPIO
 from l293d.config import Config
 Config = Config()
 
@@ -28,9 +29,6 @@ def v_print(string):
         return True
     return False
 
-
-# Import GPIO
-from l293d.gpio import GPIO
 
 GPIO.setwarnings(False)
 
@@ -236,4 +234,3 @@ def cleanup():
         v_print('GPIO cleanup successful.')
     except Exception:
         v_print('GPIO cleanup failed.')
-

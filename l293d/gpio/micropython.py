@@ -1,8 +1,6 @@
 
 import machine
 
-from l293d.driver import v_print
-
 
 class GPIO(object):
     __pins = {}
@@ -30,7 +28,7 @@ class GPIO(object):
     @classmethod
     def PWM(cls, pin, freq):
         return cls.PwmObject(cls.__pins[pin], freq)
-    
+
     @classmethod
     def setwarnings(cls, warn):
         pass
@@ -46,4 +44,3 @@ class GPIO(object):
     @classmethod
     def output(cls, pin_num, mode):
         cls.__pins[pin_num].value(mode)
-

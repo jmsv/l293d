@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 class Config(object):
     __verbose = True
     __test_mode = False
@@ -33,10 +34,6 @@ class Config(object):
                 raise AttributeError(
                     "object '{}' has no attribute '{}'".format(
                         cls.__name__, attr))
-        else:
-            # Now that the set_ method has done it's checks, we can use super()
-            # to actually set the value.
-            super(ConfigMeta, cls).__setattr__(attr, value)
 
     @classmethod
     def set_verbose(cls, value):
