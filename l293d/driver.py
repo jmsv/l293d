@@ -1,10 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
 
-from collections import namedtuple
-from threading import Thread
+try:
+    from collections import namedtuple
+except ImportError:
+    from ucollections import namedtuple
+
+try:
+    from threading import Thread
+except ImportError:
+    threading = False
 from time import sleep
 
 from l293d.config import Config
@@ -102,6 +108,9 @@ class DC(object):
             self.pwm.start(speed.cycle)
         # If duration has been specified, sleep then stop
         if duration is not None and direction != 0:
+            if not threading:
+                self.stop(duration)
+                return
             stop_thread = Thread(target=self.stop, args=(duration,))
             # Sleep in thread
             stop_thread.start()
@@ -189,7 +198,7 @@ class Stepper(object):
                             'for more info')
 
 
-def pins_are_valid(pins, force_selection=False):
+def pins_are_valid(pins, force_selection=True):
     """
     Check the pins specified are valid for pin numbering in use
     """
