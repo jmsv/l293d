@@ -1,4 +1,6 @@
 
+import machine
+
 from l293d.driver import v_print
 
 
@@ -13,9 +15,9 @@ class GPIO(object):
     BOARD = "BOARD"
     BCM = "BCM"
 
-    class PWM(object):
-        def __init__(self, pin_num, freq):
-            self.pin = GPIO._GPIO__pins[pin_num]
+    class PwmObject(object):
+        def __init__(self, pin, freq):
+            self.pin = pin
             self.pwm = machine.PWM(self.pin)
             self.pwm.freq(freq)
 
@@ -23,7 +25,11 @@ class GPIO(object):
             self.pwm.duty(duty)
 
         def stop(self):
-            self.pwn.deinit()
+            self.pwm.deinit()
+
+    @classmethod
+    def PWM(cls, pin, freq):
+        return cls.PwmObject(cls.__pins[pin], freq)
     
     @classmethod
     def setwarnings(cls, warn):
