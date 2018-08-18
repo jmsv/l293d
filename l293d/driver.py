@@ -24,23 +24,14 @@ def v_print(string):
 
 
 # Import GPIO
-try:
-    import RPi.GPIO as GPIO
-except ImportError:
-    GPIO = None
-    Config.test_mode = True
-    v_print(
-        "Can't import RPi.GPIO; test mode has been enabled:\n"
-        "http://l293d.rtfd.io/en/latest/user-guide/configuration/#test-mode")
+from l293d.gpio import GPIO
 
-if not Config.test_mode:
-    GPIO.setwarnings(False)
+GPIO.setwarnings(False)
 
 # Set GPIO mode
-if not Config.test_mode:
-    pin_num = Config.pin_numbering
-    v_print('Setting GPIO mode: {}'.format(pin_num))
-    GPIO.setmode(getattr(GPIO, pin_num))
+pin_num = Config.pin_numbering
+v_print('Setting GPIO mode: {}'.format(pin_num))
+GPIO.setmode(getattr(GPIO, pin_num))
 
 pins_in_use = Config.pins_in_use  # Lists pins in use (all motors)
 
@@ -80,8 +71,7 @@ class DC(object):
         Set GPIO.OUT for each pin in use
         """
         for pin in self.motor_pins:
-            if not Config.test_mode:
-                GPIO.setup(pin, GPIO.OUT)
+            GPIO.setup(pin, GPIO.OUT)
 
     def drive_motor(self, direction=1, duration=None, wait=True, speed=100):
         """
@@ -99,18 +89,17 @@ class DC(object):
 
         if self.reversed:
             direction *= -1
-        if not Config.test_mode:
-            if direction == 0:  # Then stop motor
-                self.pwm.stop()
-            else:  # Spin motor
-                # Create a PWM object to control the 'enable pin' for the chip
-                self.pwm = GPIO.PWM(self.motor_pins[0], speed.freq)
-                # Set first direction GPIO level
-                GPIO.output(self.motor_pins[direction], GPIO.HIGH)
-                # Set second direction GPIO level
-                GPIO.output(self.motor_pins[direction * -1], GPIO.LOW)
-                # Start PWM on the 'enable pin'
-                self.pwm.start(speed.cycle)
+        if direction == 0:  # Then stop motor
+            self.pwm.stop()
+        else:  # Spin motor
+            # Create a PWM object to control the 'enable pin' for the chip
+            self.pwm = GPIO.PWM(self.motor_pins[0], speed.freq)
+            # Set first direction GPIO level
+            GPIO.output(self.motor_pins[direction], GPIO.HIGH)
+            # Set second direction GPIO level
+            GPIO.output(self.motor_pins[direction * -1], GPIO.LOW)
+            # Start PWM on the 'enable pin'
+            self.pwm.start(speed.cycle)
         # If duration has been specified, sleep then stop
         if duration is not None and direction != 0:
             stop_thread = Thread(target=self.stop, args=(duration,))
@@ -233,12 +222,9 @@ def cleanup():
     """
     Call GPIO cleanup method
     """
-    if not Config.test_mode:
-        try:
-            GPIO.cleanup()
-            v_print('GPIO cleanup successful.')
-        except Exception:
-            v_print('GPIO cleanup failed.')
-    else:
-        # Skip GPIO cleanup if GPIO calls are not being made (test_mode)
-        v_print('Cleanup not needed when test_mode is enabled.')
+    try:
+        GPIO.cleanup()
+        v_print('GPIO cleanup successful.')
+    except Exception:
+        v_print('GPIO cleanup failed.')
+
