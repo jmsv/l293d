@@ -13,7 +13,7 @@ except ImportError:
     threading = False
 from time import sleep
 
-from l293d.gpio import GPIO
+from l293d.gpio import GPIO, pins_are_valid
 from l293d.config import Config
 Config = Config()
 
@@ -62,7 +62,7 @@ class DC(object):
         self.reversed = False
 
         # Check pins are valid
-        if pins_are_valid(self.motor_pins):
+        if pins_are_valid(self.motor_pins, self.pin_numbering):
             self.exists = True
         # Append to global list of pins in use
         for pin in self.motor_pins:
@@ -194,35 +194,6 @@ class Stepper(object):
         raise FutureWarning('Stepper motors are not yet supported. Go to '
                             'https://github.com/jamesevickery/l293d/issues/20 '
                             'for more info')
-
-
-def pins_are_valid(pins, force_selection=True):
-    """
-    Check the pins specified are valid for pin numbering in use
-    """
-    # Pin numbering, used below, should be
-    # a parameter of this function (future)
-    if Config.pin_numbering == 'BOARD':  # Set valid pins for BOARD
-        valid_pins = [
-            7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37
-        ]
-    elif Config.pin_numbering == 'BCM':  # Set valid pins for BCM
-        valid_pins = [
-            4, 5, 6, 12, 13, 16, 17, 18, 22, 23, 24, 25, 26, 27
-        ]
-    else:  # pin_numbering value invalid
-        raise ValueError("pin_numbering must be either 'BOARD' or 'BCM'.")
-    for pin in pins:
-        pin_int = int(pin)
-        if pin_int not in valid_pins and force_selection is False:
-            err_str = (
-                    "GPIO pin number must be from list of valid pins: %s"
-                    "\nTo use selected pins anyway, set force_selection=True "
-                    "in function call." % str(valid_pins))
-            raise ValueError(err_str)
-        if pin in pins_in_use:
-            raise ValueError('GPIO pin {} already in use.'.format(pin))
-    return True
 
 
 def cleanup():

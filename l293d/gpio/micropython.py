@@ -1,5 +1,13 @@
-
 import machine
+
+
+def pins_are_valid(pins, pin_numbering, force_selection=False):
+    """
+    Check the pins specified are valid for pin numbering in use
+    """
+    # Micropython can be run on any number of boards, so don't do any
+    #  validation against pin numbers.
+    return True
 
 
 class GPIO(object):

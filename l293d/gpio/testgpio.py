@@ -1,4 +1,11 @@
 
+def pins_are_valid(pins, pin_numbering, force_selection=False):
+    """
+    Check the pins specified are valid for pin numbering in use
+    """
+    # Test mode shouldn't validate pins
+    return True
+
 
 class GPIO(object):
     __pins = {}
