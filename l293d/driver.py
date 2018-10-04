@@ -57,12 +57,10 @@ class DC(object):
 
         self.pwm = None
 
-        self.pin_numbering = Config.pin_numbering
-
         self.reversed = False
 
         # Check pins are valid
-        if pins_are_valid(self.motor_pins, self.pin_numbering):
+        if pins_are_valid(self.motor_pins):
             self.exists = True
         # Append to global list of pins in use
         for pin in self.motor_pins:
@@ -132,7 +130,7 @@ class DC(object):
                     '{pin_nums} pins {pin_str}'.format(
                 action=action,
                 reversed='reversed' if self.reversed else '',
-                pin_nums=self.pin_numbering,
+                pin_nums=Config.pin_numbering,
                 pin_str=self.pins_string_list()))
 
         self.drive_motor(direction=direction, duration=duration,

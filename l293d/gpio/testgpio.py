@@ -1,5 +1,5 @@
 
-def pins_are_valid(pins, pin_numbering, force_selection=False):
+def pins_are_valid(pins, force_selection=False):
     """
     Check the pins specified are valid for pin numbering in use
     """
