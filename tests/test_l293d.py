@@ -29,11 +29,10 @@ class L293DTestCase(unittest.TestCase):
         force_selection parameter
         """
         import l293d as d
-        print(str(d))
-        cases = (((33, 36, 37), False), ((19, 21, 23), True))
+        cases = (([33, 36, 37], False), ([19, 21, 23], True))
         for pins, force_selection in cases:
             motor = d.DC(*pins, force_selection=force_selection)
-            self.assertEqual(motor.force_selection, force_selection)
+            self.assertEqual(d.pins_in_use, pins)
             motor.remove()
         reload(d.driver)
 

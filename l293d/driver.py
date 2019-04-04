@@ -58,7 +58,6 @@ class DC(object):
         self.motor_pins[0] = pin_a
         self.motor_pins[1] = pin_b
         self.motor_pins[2] = pin_c
-        self.force_selection = force_selection
 
         self.pwm = None
 
@@ -67,7 +66,7 @@ class DC(object):
         self.reversed = False
 
         # Check pins are valid
-        if pins_are_valid(self.motor_pins, self.force_selection):
+        if pins_are_valid(self.motor_pins, force_selection):
             self.exists = True
         # Append to global list of pins in use
         for pin in self.motor_pins:
