@@ -52,7 +52,7 @@ class DC(object):
     motor_pins[2] is pinC is L293D pin7 or pin15 : Clockwise positive
     """
 
-    def __init__(self, pin_a=0, pin_b=0, pin_c=0, force_selection=False):
+    def __init__(self, pin_a=0, pin_b=0, pin_c=0):
         # Assign parameters to list
         self.motor_pins = [0 for x in range(3)]
         self.motor_pins[0] = pin_a
@@ -66,7 +66,7 @@ class DC(object):
         self.reversed = False
 
         # Check pins are valid
-        if pins_are_valid(self.motor_pins, force_selection):
+        if pins_are_valid(self.motor_pins):
             self.exists = True
         # Append to global list of pins in use
         for pin in self.motor_pins:

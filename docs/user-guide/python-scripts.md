@@ -16,14 +16,6 @@ In this example, the GPIO pin numbers will be the same as listed in [Hardware Se
 motor1 = l293d.DC(22, 18, 16)
 ```
 
-In some cases, it may be necessary to use some pins that aren't considered valid, but we can force it 
-by expliciting the `force_selection` parameter as `True` in DC class initialization (by default, this
-parameter is `False`).
-
-```python
-motor1 = l293d.DC(19, 21, 23, force_selection=True)
-```
-
 In this case, 'motor1' is what we're calling the DC motor object. You can call it whatever you want,
 for example `wheel_motor`, `london_eye` or `spinny_thing`.
 
