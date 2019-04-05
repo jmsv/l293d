@@ -23,6 +23,19 @@ class L293DTestCase(unittest.TestCase):
         self.assertTrue(True)
         reload(d.driver)  # Revert changes
 
+    def test_create_motor_with_force_selection(self):
+        """
+        Test DC class instance creation with explicity
+        force_selection parameter
+        """
+        import l293d as d
+        cases = (([33, 36, 37], False), ([19, 21, 23], True))
+        for pins, force_selection in cases:
+            motor = d.DC(*pins, force_selection=force_selection)
+            self.assertEqual(d.pins_in_use, pins)
+            motor.remove()
+        reload(d.driver)
+
     def test_pins_string_list(self):
         """
         Test that the list of pins is returned correctly
