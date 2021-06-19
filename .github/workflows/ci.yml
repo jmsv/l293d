@@ -1,0 +1,33 @@
+name: Test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        python-version: [2.7, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, '3.10.0-alpha.1']
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+      
+      - name: Install test stuff
+        run: pip install flake8 pytest
+
+      - name: Install l293d
+        run: python setup.py install
+
+      - name: Run flake8
+        run: flake8 . --exclude __init__.py
+
+      - name: Run tests
+        run: py.test tests/
