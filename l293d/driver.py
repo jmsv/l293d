@@ -1,13 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
 
-from collections import namedtuple
-from threading import Thread
+try:
+    from collections import namedtuple
+except ImportError:
+    from ucollections import namedtuple
+
+try:
+    from threading import Thread
+except ImportError:
+    threading = False
 from time import sleep
 
+from l293d.gpio import GPIO, pins_are_valid
 from l293d.config import Config
+Config = Config()
 
 
 def v_print(string):
@@ -22,24 +30,12 @@ def v_print(string):
     return False
 
 
-# Import GPIO
-try:
-    import RPi.GPIO as GPIO
-except ImportError:
-    GPIO = None
-    Config.test_mode = True
-    v_print(
-        "Can't import RPi.GPIO; test mode has been enabled:\n"
-        "http://l293d.rtfd.io/en/latest/user-guide/configuration/#test-mode")
-
-if not Config.test_mode:
-    GPIO.setwarnings(False)
+GPIO.setwarnings(False)
 
 # Set GPIO mode
-if not Config.test_mode:
-    pin_num = Config.pin_numbering
-    v_print('Setting GPIO mode: {}'.format(pin_num))
-    GPIO.setmode(getattr(GPIO, pin_num))
+pin_num = Config.pin_numbering
+v_print('Setting GPIO mode: {}'.format(pin_num))
+GPIO.setmode(getattr(GPIO, pin_num))
 
 pins_in_use = Config.pins_in_use  # Lists pins in use (all motors)
 
@@ -61,8 +57,6 @@ class DC(object):
 
         self.pwm = None
 
-        self.pin_numbering = Config.pin_numbering
-
         self.reversed = False
 
         # Check pins are valid
@@ -79,8 +73,7 @@ class DC(object):
         Set GPIO.OUT for each pin in use
         """
         for pin in self.motor_pins:
-            if not Config.test_mode:
-                GPIO.setup(pin, GPIO.OUT)
+            GPIO.setup(pin, GPIO.OUT)
 
     def drive_motor(self, direction=1, duration=None, wait=True, speed=100):
         """
@@ -98,20 +91,22 @@ class DC(object):
 
         if self.reversed:
             direction *= -1
-        if not Config.test_mode:
-            if direction == 0:  # Then stop motor
-                self.pwm.stop()
-            else:  # Spin motor
-                # Create a PWM object to control the 'enable pin' for the chip
-                self.pwm = GPIO.PWM(self.motor_pins[0], speed.freq)
-                # Set first direction GPIO level
-                GPIO.output(self.motor_pins[direction], GPIO.HIGH)
-                # Set second direction GPIO level
-                GPIO.output(self.motor_pins[direction * -1], GPIO.LOW)
-                # Start PWM on the 'enable pin'
-                self.pwm.start(speed.cycle)
+        if direction == 0:  # Then stop motor
+            self.pwm.stop()
+        else:  # Spin motor
+            # Create a PWM object to control the 'enable pin' for the chip
+            self.pwm = GPIO.PWM(self.motor_pins[0], speed.freq)
+            # Set first direction GPIO level
+            GPIO.output(self.motor_pins[direction], GPIO.HIGH)
+            # Set second direction GPIO level
+            GPIO.output(self.motor_pins[direction * -1], GPIO.LOW)
+            # Start PWM on the 'enable pin'
+            self.pwm.start(speed.cycle)
         # If duration has been specified, sleep then stop
         if duration is not None and direction != 0:
+            if not threading:
+                self.stop(duration)
+                return
             stop_thread = Thread(target=self.stop, args=(duration,))
             # Sleep in thread
             stop_thread.start()
@@ -135,7 +130,7 @@ class DC(object):
                     '{pin_nums} pins {pin_str}'.format(
                 action=action,
                 reversed='reversed' if self.reversed else '',
-                pin_nums=self.pin_numbering,
+                pin_nums=Config.pin_numbering,
                 pin_str=self.pins_string_list()))
 
         self.drive_motor(direction=direction, duration=duration,
@@ -199,45 +194,12 @@ class Stepper(object):
                             'for more info')
 
 
-def pins_are_valid(pins, force_selection=False):
-    """
-    Check the pins specified are valid for pin numbering in use
-    """
-    # Pin numbering, used below, should be
-    # a parameter of this function (future)
-    if Config.pin_numbering == 'BOARD':  # Set valid pins for BOARD
-        valid_pins = [
-            7, 11, 12, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37
-        ]
-    elif Config.pin_numbering == 'BCM':  # Set valid pins for BCM
-        valid_pins = [
-            4, 5, 6, 12, 13, 16, 17, 18, 22, 23, 24, 25, 26, 27
-        ]
-    else:  # pin_numbering value invalid
-        raise ValueError("pin_numbering must be either 'BOARD' or 'BCM'.")
-    for pin in pins:
-        pin_int = int(pin)
-        if pin_int not in valid_pins and force_selection is False:
-            err_str = (
-                    "GPIO pin number must be from list of valid pins: %s"
-                    "\nTo use selected pins anyway, set force_selection=True "
-                    "in function call." % str(valid_pins))
-            raise ValueError(err_str)
-        if pin in pins_in_use:
-            raise ValueError('GPIO pin {} already in use.'.format(pin))
-    return True
-
-
 def cleanup():
     """
     Call GPIO cleanup method
     """
-    if not Config.test_mode:
-        try:
-            GPIO.cleanup()
-            v_print('GPIO cleanup successful.')
-        except Exception:
-            v_print('GPIO cleanup failed.')
-    else:
-        # Skip GPIO cleanup if GPIO calls are not being made (test_mode)
-        v_print('Cleanup not needed when test_mode is enabled.')
+    try:
+        GPIO.cleanup()
+        v_print('GPIO cleanup successful.')
+    except Exception:
+        v_print('GPIO cleanup failed.')
